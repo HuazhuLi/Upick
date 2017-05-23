@@ -28,7 +28,7 @@
       <div class="input-area">
         <textarea placeholder="请说出你的故事(限200字以内)" v-model="text"></textarea>
         <ul class="input-area-upload">
-          <input type="file" ref="imageSelector" multiple/>          
+          <input type="file" ref="imageSelector" multiple/>
           <li v-for="(image, i) in imagesToUpload" class="images-to-upload">
             <img :src="image.src" class=""/>
             <a @click="imagesToUpload.splice(i, 1); imagesURLToUpload.splice(i, 1); $refs.imageSelector.value = ''" class="image-upload-delete">+</a>
@@ -51,6 +51,7 @@
     </div>
   </div>
 </template>
+
 <style>
 div.comment-root{
   opacity: 0;
@@ -168,9 +169,11 @@ div.comment-body .input-area{
   padding:0.5rem 0.5rem 1rem 0.5rem;
   border-radius: 0.3rem;
   margin:0.5rem 1.5rem 0.5rem 1.5rem;
-  position: absolute;
   top: 4.2rem;
-  min-height: 5rem;
+  min-height: 7rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 .input-area textarea{
   width: 100%;
@@ -179,6 +182,8 @@ div.comment-body .input-area{
   resize: none;
   height: calc(100% - 5rem);
   padding: 0 0.3rem;
+  min-height: 4rem;
+  flex: 1;
 }
 div.comment-footer{
   height: 3.2rem;
@@ -309,7 +314,7 @@ div.alert{
 }
 .input-area-upload {
   padding: 0;
-  margin: 0.5rem 0.5rem 0.7rem;
+  margin: 0.5rem 0.5rem 0;
   list-style: none;
   /* text-align: center; */
   display: flex;
@@ -329,7 +334,7 @@ div.alert{
   display: none;
 }
 .input-area-upload canvas {
-  display: none;  
+  display: none;
 }
 .images-to-upload img {
   width: 100%;
@@ -401,7 +406,7 @@ module.exports = {
         }
         vueThis.$router.replace('/comment/mark/' + vueThis.$route.params.id + '/' + vueThis.data.name + '/' + vueThis.getChosenTags() + '/' + encodeURIComponent(vueThis.text) + '/' + encodeURIComponent(JSON.stringify(vueThis.imagesURLToUpload)));
       }).catch(function (err) {
-        console.log(err);
+        vueThis.alert_(err);
       });
     },
     getChosenTags: function () {
@@ -427,7 +432,6 @@ module.exports = {
     },
     selectImg: function () {
       this.$refs.imageSelector.click();
-      console.log(this.$refs.imageSelector);
     }
   },
   watch: {
@@ -468,12 +472,10 @@ module.exports = {
         }, 200);
       })
       .catch(function (error) {
-        console.log(error);
-        if (error)alert('加载失败！');
+        if (error) vueThis.alert_('加载失败！');
         vueThis.loaded = true;
       });
     this.$refs.imageSelector.addEventListener('change', function (ele) {
-      console.log('change!');
       for (var i = 0; i < Math.min(ele.target.files.length, 3); i++) {
         vueThis.uploadPromises.push((function (i) {
           return new Promise(function (resolve, reject) {

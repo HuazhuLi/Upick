@@ -299,7 +299,7 @@ module.exports = {
         title: this.$route.params.title,
         tags: this.$route.params.tags === 'empty' ? [] : this.$route.params.tags.split('&'),
         text: this.$route.params.comment === 'empty' ? '' : decodeURIComponent(this.$route.params.comment),
-        img: decodeURIComponent(this.$route.params.images),
+        img: JSON.parse(decodeURIComponent(this.$route.params.images)),
         score: this.score
       };
       datas = encodeURIComponent(JSON.stringify(datas));

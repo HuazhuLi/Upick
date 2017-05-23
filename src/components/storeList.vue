@@ -24,7 +24,17 @@
         <li v-for="item in data" class="store-info-item">
           <ul class="pic" >
             <li v-for="(item3, index) in item.picURLs.slice(0,1)">
-              <img v-bind:src="item3.msrc" class="preview-img" v-on:click="$preview.open(index, item.picURLs)"/>
+              <img v-bind:src="item3.msrc" :ref="item3.msrc.split('/')[1].split('.')[0].split('-')[1]" class="preview-img" v-on:click="
+              $preview.open(index, item.picURLs, {
+                getThumbBoundsFn: function (i) {
+                  var rect = $refs[item3.msrc.split('/')[1].split('.')[0].split('-')[1]][0].getBoundingClientRect()
+                  return {
+                    x: rect.left,
+                    y: rect.top,
+                    w: $refs[item3.msrc.split('/')[1].split('.')[0].split('-')[1]][0].width
+                  }
+                }
+              })"/>
             </li>
           </ul>
           <div class="store-info-item-right">
@@ -379,13 +389,19 @@ module.exports = {
       isMenuActive: false,
       isSearchActive: false,
       title: '',
-      keyword: ''
+      keyword: '',
+      previewOptions: {
+        showAnimationDuration: 0,
+        hideAnimationDuration: 0,
+        getThumbBoundsFn: function (i) {
+          console.log(arguments);
+        }
+      }
     });
   },
   watch: {
     '$route': function () {
       var vueThis = this;
-
       if (vueThis.$route.path.includes('storeList') && vueThis.$route.path.includes('search')) {
         vueThis.title = '搜索: ' + vueThis.$route.params.keyword;
         axios.get('store_list_search_data?keyword=' + vueThis.$route.params.keyword)
@@ -505,9 +521,6 @@ module.exports = {
           if (error)alert('加载失败！');
           vueThis.loaded = true;
         });
-
-      /* vueThis.data=[{"id":1,"name":"\u8001\u518d","openTime":"6:00-24:00","adress":"XXXXXXX","score":9,"overall":9.8,"picURLs":["path\/to\/pic1","\u6700\u597d\u662f\u7edd\u5bf9\u8def\u5f84"],"tags":[["\u73af\u5883\u597d",10],["\u9002\u5408\u81ea\u4e60",20],["\u96be\u559d",7]]},{"id":2,"name":"F2","openTime":"6:00-24:00","adress":"XXXXXXX","score":7,"overall":6.8,"picURLs":["",""],"tags":[["\u73af\u5883\u597d",1],["\u4e0d\u9002\u5408\u81ea\u4e60",5],["\u96be\u559d",7]]}];
-      vueThis.loaded=true; */
     }
   }
 }

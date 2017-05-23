@@ -387,41 +387,11 @@ div.hot-store div.mainpage-bottom>a{
 }
 </style>
 <script>
-var handle;
 var axios = require('axios');
 var wx = require('weixin-js-sdk');
 var ctx;
 var canvas;
-var step = 0;
-var d_ = 0;
-var lines = [
-  'rgba(255,255,255,1)',
-  'rgba(96,119,186, 0.7)',
-  'rgba(142,211,227, 0.5)'
-];
-var meteor = [];
-var stars = [];
-var n = 0;
-window.requestAnimFrame = (function () {
-  return window.requestAnimationFrame ||
-    window.webkitRequestAnimationFrame ||
-    window.mozRequestAnimationFrame ||
-    window.oRequestAnimationFrame ||
-    window.msRequestAnimationFrame ||
-    function (callback) {
-      window.setTimeout(callback, 1000 / 60);
-    };
-})();
-window.cancelAnimFrame = (function () {
-  return window.cancelAnimationFrame ||
-    window.webkitCancelAnimationFrame ||
-    window.mozCancelAnimationFrame ||
-    window.oCancelAnimationFrame ||
-    window.msCancelAnimationFrame ||
-    function (n) {
-      window.clearTimeout(n);
-    };
-})();
+
 module.exports = {
   data: function () {
     return ({
@@ -466,192 +436,148 @@ module.exports = {
         return;
       }
       ctx.drawImage(img2, 0, 0, img2.width, img2.height, 0, canvas.height * 0.1, canvas.width, canvas.width * img2.height / img2.width);
-    },
-    loop: function () {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#343856';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      var img = document.getElementById('xingxing');
-      if (!img) {
-        return;
-      }
-      ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.width * img.height / img.width);
-
-      step += 130;
-
-      var dd = canvas.width / 50;
-      for (var j = 0; j < meteor.length; j++) {
-        if (meteor[j].position.x - meteor[j].length / Math.SQRT2 > canvas.width || meteor[j].position.y - meteor[j].length / Math.SQRT2 > canvas.height) {
-          meteor.splice(j, 1);
-          meteor.push({position: {x: Math.random() * canvas.width * 0.75, y: 0}, color: '', length: Math.random() * 0.5 * d_ + 2 * d_});
-        } else {
-          meteor[j].position.x += dd / 2;
-          meteor[j].position.y += dd / 2;
-
-          var grd = ctx.createRadialGradient(meteor[j].position.x, meteor[j].position.y, 1, meteor[j].position.x, meteor[j].position.y, dd * 1.5);
-          grd.addColorStop(0, 'rgba(255,255,255,0.6)');
-          grd.addColorStop(0.2, 'rgba(255,223,0,0.18)');
-          grd.addColorStop(1, 'rgba(0,0,0,0)');
-          ctx.fillStyle = grd;
-          ctx.fillRect(meteor[j].position.x - dd / 2, meteor[j].position.y - dd / 2, dd, dd);
-          ctx.moveTo(meteor[j].position.x, meteor[j].position.y);
-          ctx.lineTo(meteor[j].position.x - meteor[j].length / Math.SQRT2, meteor[j].position.y - meteor[j].length / Math.SQRT2);
-          ctx.strokeStyle = 'rgba(255,255,255,0.2)';
-          ctx.lineWidth = '20px';
-          ctx.stroke();
-        }
-      }
-      for (j = lines.length - 1; j >= 0; j--) {
-        ctx.fillStyle = lines[j];
-        var angle = (step + j * 90) * Math.PI / 180;
-        var deltaHeight = Math.sin(angle) * d_ * 0.7;
-        var deltaHeightRight = Math.cos(angle) * d_ * 0.7;
-        ctx.beginPath();
-        ctx.moveTo(0, canvas.height / 3 * 2 + deltaHeight);
-        ctx.bezierCurveTo(canvas.width / 2, canvas.height / 3 * 2 + deltaHeight - d_, canvas.width / 2, canvas.height / 3 * 2 + deltaHeightRight - d_, canvas.width, canvas.height / 3 * 2 + deltaHeightRight);
-        ctx.lineTo(canvas.width, canvas.height);
-        ctx.lineTo(0, canvas.height);
-        ctx.lineTo(0, canvas.height / 3 * 2 + deltaHeight);
-        ctx.closePath();
-        ctx.fill();
-      }
-      // handle = requestAnimFrame(this.loop);
     }
   },
   mounted: function () {
+    var vueThis = this;
+    vueThis.rem = parseInt(window.getComputedStyle(document.documentElement)['fontSize']);
     canvas = document.querySelector('canvas');
     ctx = document.querySelector('canvas').getContext('2d');
-    d_ = canvas.width * 0.08;
-    meteor = [];
-    stars = [];
-    for (var i = 0; i < 2; i++) {
-      meteor.push({position: {x: -10 * d_ + Math.random() * 30 * d_, y: -5 * d_ - Math.random() * d_}, color: '', length: d_ / 2});
-    }
-    for (i = 0; i < 10; i++) {
-      stars.push({x: d_ + Math.random() * 10 * d_, y: d_ + Math.random() * 5 * d_});
-    }
-    window.cancelAnimFrame(handle);
-    var vueThis = this;
-
-    document.getElementById('xingxing').onload = function () {
-      document.getElementById('wave').onload = function () {
-        vueThis.draw();
-      };
-    };
-    vueThis.rem = parseInt(window.getComputedStyle(document.documentElement)['fontSize']);
-    var img1 = (new Image());
-    var img2 = (new Image());
-    var img3 = (new Image());
-    img1.src = 'static/img/bottom.png';
-    img1.onload = function () { n++; if (n >= 4) { vueThis.loaded = true; } };
-    img2.src = 'static/img/title.png';
-    img2.onload = function () { n++; if (n >= 4) { vueThis.loaded = true; } };
-    img3.src = 'static/img/columns.png';
-    img3.onload = function () { n++; if (n >= 4) { vueThis.loaded = true; } };
-    img1 = img2 = img3 = null;
-    axios.get('index')
+    var imagesToLoad = [
+      'static/img/bottom.png',
+      'static/img/title.png',
+      'static/img/columns.png',
+      'static/img/wave.png',
+      'static/img/xingxing.png'
+    ];
+    var promises = imagesToLoad.map(function (src) {
+      return new Promise(function (resolve, reject) {
+        var img = new Image();
+        img.src = src;
+        img.onload = function () {
+          if (img.width + img.height === 0) {
+            reject(new Error('图片加载失败'));
+          } else {
+            resolve();
+          }
+        }
+        img.onerror = function () {
+          reject(new Error('图片加载失败'));
+        }
+      });
+    });
+    var prepare = axios.get('login')
+      .then(function (response) {
+        if (response.data.status) {
+          return axios.get('index');
+        } else {
+          window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx70014cb42f7c9422&redirect_uri=http%3A//upick.hustonline.net/weixin/access&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
+          return Promise.reject(new Error('需要登录'));
+        }
+      })
       .then(function (response) {
         response = response.data;
         vueThis.data = response;
-        n++;
-        if (n >= 4) { vueThis.loaded = true; }
-        axios.get('http://weixin.bigtech.cc/service/jssdk_config?url=' + encodeURIComponent('http://weixin.bigtech.cc/upick/index.html'))
-          .then(function (response) {
-            response = response.data;
-            wx.config({
-              debug: false,
-              appId: response.appid,
-              timestamp: response.timestamp,
-              nonceStr: response.noncestr,
-              signature: response.signature,
-              jsApiList: [
-                'onMenuShareTimeline',
-                'onMenuShareAppMessage',
-                'onMenuShareQQ',
-                'onMenuShareWeibo',
-                'onMenuShareQZone'
-              ]
-            });
-            wx.ready(function () {
-              wx.onMenuShareTimeline({
-                title: 'Upick | 华科吃喝玩乐，让老司机带你飞！', // 分享标题
-                desc: '华科吃喝玩乐，让老司机带你飞！！', // 分享描述
-                link: 'http://weixin.bigtech.cc/upick/index.html', // 分享链接
-                imgUrl: 'http://weixin.bigtech.cc/upick/static/img/title_share.png', // 分享图标
-                success: function () {
-                  // 用户确认分享后执行的回调函数
-                },
-                cancel: function () {
-                  // 用户取消分享后执行的回调函数
-                }
-              });
-              wx.onMenuShareAppMessage({
-                title: 'Upick | 华科吃喝玩乐，让老司机带你飞！', // 分享标题
-                desc: '华科吃喝玩乐，让老司机带你飞！！', // 分享描述
-                link: 'http://weixin.bigtech.cc/upick/index.html', // 分享链接
-                imgUrl: 'http://weixin.bigtech.cc/upick/static/img/title_share.png', // 分享图标
-                success: function () {
-                  // 用户确认分享后执行的回调函数
-                },
-                cancel: function () {
-                  // 用户取消分享后执行的回调函数
-                }
-              });
-              wx.onMenuShareQQ({
-                title: 'Upick | 华科吃喝玩乐，让老司机带你飞！', // 分享标题
-                desc: '华科吃喝玩乐，让老司机带你飞！！', // 分享描述
-                link: 'http://weixin.bigtech.cc/upick/index.html', // 分享链接
-                imgUrl: 'http://weixin.bigtech.cc/upick/static/img/title_share.png', // 分享图标
-                success: function () {
-                  // 用户确认分享后执行的回调函数
-                },
-                cancel: function () {
-                  // 用户取消分享后执行的回调函数
-                }
-              });
-              wx.onMenuShareWeibo({
-                title: 'Upick | 华科吃喝玩乐，让老司机带你飞！', // 分享标题
-                desc: '华科吃喝玩乐，让老司机带你飞！！', // 分享描述
-                link: 'http://weixin.bigtech.cc/upick/index.html', // 分享链接
-                imgUrl: 'http://weixin.bigtech.cc/upick/static/img/title_share.png', // 分享图标
-                success: function () {
-                  // 用户确认分享后执行的回调函数
-                },
-                cancel: function () {
-                  // 用户取消分享后执行的回调函数
-                }
-              });
-              wx.onMenuShareQZone({
-                title: 'Upick | 华科吃喝玩乐，让老司机带你飞！', // 分享标题
-                desc: '华科吃喝玩乐，让老司机带你飞！！', // 分享描述
-                link: 'http://weixin.bigtech.cc/upick/index.html', // 分享链接
-                imgUrl: 'http://weixin.bigtech.cc/upick/static/img/title_share.png', // 分享图标
-                success: function () {
-                  // 用户确认分享后执行的回调函数
-                },
-                cancel: function () {
-                  // 用户取消分享后执行的回调函数
-                }
-              });
-              n++;
-              if (n >= 4) { vueThis.loaded = true; }
-            });
-            wx.error(function (res) {
-              console.log('error');
-              console.log(res);
-            });
-          })
-          .catch(function (error) {
-            console.log(error);
-            if (error)alert('主页加载失败！');
-            vueThis.loaded = true;
-          });
-      })
-      .catch(function (error) {
-        console.log(error);
-        if (error)alert('主页加载失败！');
-        vueThis.loaded = true;
       });
+
+    axios.get('http://weixin.bigtech.cc/service/jssdk_config?url=' + encodeURIComponent('http://weixin.bigtech.cc/upick/index.html'))
+    .then(function (response) {
+      response = response.data;
+      wx.config({
+        debug: false,
+        appId: response.appid,
+        timestamp: response.timestamp,
+        nonceStr: response.noncestr,
+        signature: response.signature,
+        jsApiList: [
+          'onMenuShareTimeline',
+          'onMenuShareAppMessage',
+          'onMenuShareQQ',
+          'onMenuShareWeibo',
+          'onMenuShareQZone'
+        ]
+      });
+      return new Promise(function (resolve, reject) {
+        wx.ready(function () {
+          wx.onMenuShareTimeline({
+            title: 'Upick | 华科吃喝玩乐，让老司机带你飞！', // 分享标题
+            desc: '华科吃喝玩乐，让老司机带你飞！！', // 分享描述
+            link: 'http://weixin.bigtech.cc/upick/index.html', // 分享链接
+            imgUrl: 'http://weixin.bigtech.cc/upick/static/img/title_share.png', // 分享图标
+            success: function () {
+              // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+              // 用户取消分享后执行的回调函数
+            }
+          });
+          wx.onMenuShareAppMessage({
+            title: 'Upick | 华科吃喝玩乐，让老司机带你飞！', // 分享标题
+            desc: '华科吃喝玩乐，让老司机带你飞！！', // 分享描述
+            link: 'http://weixin.bigtech.cc/upick/index.html', // 分享链接
+            imgUrl: 'http://weixin.bigtech.cc/upick/static/img/title_share.png', // 分享图标
+            success: function () {
+              // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+              // 用户取消分享后执行的回调函数
+            }
+          });
+          wx.onMenuShareQQ({
+            title: 'Upick | 华科吃喝玩乐，让老司机带你飞！', // 分享标题
+            desc: '华科吃喝玩乐，让老司机带你飞！！', // 分享描述
+            link: 'http://weixin.bigtech.cc/upick/index.html', // 分享链接
+            imgUrl: 'http://weixin.bigtech.cc/upick/static/img/title_share.png', // 分享图标
+            success: function () {
+              // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+              // 用户取消分享后执行的回调函数
+            }
+          });
+          wx.onMenuShareWeibo({
+            title: 'Upick | 华科吃喝玩乐，让老司机带你飞！', // 分享标题
+            desc: '华科吃喝玩乐，让老司机带你飞！！', // 分享描述
+            link: 'http://weixin.bigtech.cc/upick/index.html', // 分享链接
+            imgUrl: 'http://weixin.bigtech.cc/upick/static/img/title_share.png', // 分享图标
+            success: function () {
+              // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+              // 用户取消分享后执行的回调函数
+            }
+          });
+          wx.onMenuShareQZone({
+            title: 'Upick | 华科吃喝玩乐，让老司机带你飞！', // 分享标题
+            desc: '华科吃喝玩乐，让老司机带你飞！！', // 分享描述
+            link: 'http://weixin.bigtech.cc/upick/index.html', // 分享链接
+            imgUrl: 'http://weixin.bigtech.cc/upick/static/img/title_share.png', // 分享图标
+            success: function () {
+              // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+              // 用户取消分享后执行的回调函数
+            }
+          });
+          resolve();
+        });
+        wx.error(function (res) {
+          // reject(new Error('微信认证失败'));
+          console.error('微信认证失败');
+        });
+      });
+    })
+    .catch(function (err) {
+      throw err;
+    });
+    promises.push(prepare);
+    Promise.all(promises).then(function () {
+      vueThis.draw();
+      vueThis.loaded = true;
+    })
+    .catch(function (err) {
+      throw err;
+    });
   }
 }
 </script>

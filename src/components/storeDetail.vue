@@ -18,7 +18,7 @@
           </div>
           <div class="pics">
             <div class="img-con">
-              <img class="preview-img" v-for="(item2,index) in detail.picURLs.slice(0,3)" v-bind:src="item2.msrc" v-on:click="$preview.open(index,detail.picURLs)"/>
+              <img class="preview-img" v-for="(item2,index) in detail.picURLs.slice(0,3)" v-bind:src="item2.msrc" v-on:click="$preview.open(index, detail.picURLs)"/>
             </div>
             <div class="mask" v-if="detail.picURLs.length>3">+{{detail.picURLs.length-detail.picURLs_.length}}</div>
           </div>
@@ -32,7 +32,7 @@
         <ul class="comments-list" id="comments-list">
           <li v-for="item2 in detail.comments">
             <div>
-              <span class="date">{{(new Date(item2.date*1000)).toLocaleDateString()}}</span>
+              <span class="date">{{(new Date(item2.date * 1000)).toLocaleDateString()}}</span>
               <span
                 v-bind:data-id="item2.id"
                 class="dislike"
@@ -52,7 +52,7 @@
             </div>
             <p>{{item2.value}}</p>
             <ul class="comment-images-ul" v-if="item2.img && item2.img.length > 0">
-              <li v-for="src in item2.img" class="comment-images-li">
+              <li v-for="(src, i) in item2.img" class="comment-images-li">
                 <img :src="src" class="comment-image"></img>
               </li>
               <li v-for="fix in Array(3 - item2.img.length)" class="comment-images-li"></li>
@@ -173,7 +173,11 @@ module.exports = {
       .then(function (response) {
         response = response.data;
         vueThis.detail.comments = response.data;
-        // vueThis.detail.comments[0].img = ['/static/img/icon.png', '/static/img/icon.png'];
+        /*
+        vueThis.detail.comments.forEach(function (comment) {
+          comment.img = JSON.parse(comment.img);
+        });
+        */
         axios.get('is_commented?id=' + vueThis.detail.name)
           .then(function (response) {
             response = response.data;
@@ -489,6 +493,9 @@ div.store-detail-body ul.comments-list>li>div>span.like{
   float: right;
   margin:0 0.3rem;
 }
+div.store-detail-body ul.comments-list>li:last-child{
+  margin-bottom: 0.4rem;
+}
 div.store-detail-body ul.comments-list>li{
   padding:0.5rem 1.5rem;
   border-bottom: solid 1px #B6b6b6;
@@ -562,7 +569,7 @@ div.store-detail-footer>a>span {
 
 .comment-images-li {
   width: 4rem;
-  height: 4rem;
+  height: 3.2rem;
   display: inline-block;
 }
 .comment-image {
