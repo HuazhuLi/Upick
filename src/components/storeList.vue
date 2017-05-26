@@ -229,7 +229,7 @@ div.store-list-root h1{
   display: inline-block;
   color:#FFF;
   font-weight: 400;
-  margin:1rem 2rem;
+  margin:1.1rem 2rem;
   vertical-align: top;
   line-height: 1rem;
   width:5rem;
@@ -273,25 +273,26 @@ div.store-list-body>ul h2{
   font-weight: 400;
   margin: 0;
   display: inline-block;
-  width: 8rem;
+  width: 8.5rem;
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
 div.store-list-body>ul div.title-container{
   padding:0.5rem 0 0.2rem 0;
   width: 100%;
+  height: 1.5rem;
 }
 div.store-list-body>ul div.title-container>span{
   float: right;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 300;
   height: 1.4rem;
   width:2rem;
 }
 div.store-list-body>ul ul.tags{
-  padding:0 0.2rem;
+  padding:0;
   max-height:1.4rem;
   overflow: hidden;
-  margin: 0.3rem 0 0.5rem 0;
+  margin-top: 0.4rem;
   font-size: 0;
 }
 div.store-list-body>ul ul.tags>li:nth-child(4n+1){

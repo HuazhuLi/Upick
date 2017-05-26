@@ -7,10 +7,35 @@
     </div>
     <div class="store-detail-body">
       <div class="body-top"  v-bind:class="{ 'low' : low && detail.comments.length >= 5}">
-        <div class="addr-time">
+        <div >
+          <!--
           <h2 class="time"><span class="icon"></span><span class="icon-time">营业时间:</span>{{detail.openTime}}</h2>
           <h2 class="addr"><span class="icon"></span><span class="icon-addr">地址:</span>{{detail.address}}</h2>
           <span class="score">{{convertToFloat(detail.score)}}分</span>
+          -->
+          <table class="addr-time">
+            <tr>
+              <td>
+                <tr valign="top" class="open-time">
+                  <td class="icon-time"></td>
+                  <td class="addr-time-title">营业时间</td>
+                  <td>:</td>
+                  <td class="addr-time-value">
+                    <ul>
+                      <li v-for="line in detail.openTime.split(';')">{{line}}</li>
+                    </ul>
+                  </td>
+                </tr>
+                <tr class="address">
+                  <td class="icon-address"></td>
+                  <td class="addr-time-title">地址</td>
+                  <td>:</td>
+                  <td class="addr-time-value">{{detail.address}}</td>
+                </tr>
+              </td>
+              <td class="mark" ><h2 class="mark-h2">{{convertToFloat(detail.score)}}</h2>分</td>
+            </tr>
+        </table>
         </div>
         <div class="container">
           <div class="tags">
@@ -173,11 +198,6 @@ module.exports = {
       .then(function (response) {
         response = response.data;
         vueThis.detail.comments = response.data;
-        /*
-        vueThis.detail.comments.forEach(function (comment) {
-          comment.img = JSON.parse(comment.img);
-        });
-        */
         axios.get('is_commented?id=' + vueThis.detail.name)
           .then(function (response) {
             response = response.data;
@@ -256,7 +276,7 @@ div.store-detail-header>h1{
   display: inline-block;
   color:#FFF;
   font-weight: 400;
-  margin:1rem 2rem;
+  margin:1.1rem 2rem;
   vertical-align: top;
   line-height: 1rem;
   width: calc(100% - 6rem);
@@ -287,55 +307,72 @@ div.store-detail-body>div.body-top{
   -o-transition: all 0.2s;
   transition: all 0.2s;
 }
-div.store-detail-body > div.body-top > div.addr-time{
-  padding:1rem 0 0 0;
+div.store-detail-body > div.body-top  table.addr-time{
+  padding:1rem 0 0.3rem 0;
   position: relative;
-}
-div.store-detail-body>div.body-top>div.addr-time>h2{
-  font-size: 0.75rem;
-  font-weight: 400;
-  width: calc(100% - 3rem);
-  margin: 0.7rem 0 0.2rem 0;
-  position: relative;
-}
-div.store-detail-body>div.body-top>div.addr-time>h2.addr{
+  border-spacing: 0;
   width: 100%;
-  word-break: break-all;
 }
-div.store-detail-body>div.body-top>div.addr-time>h2>span:not(.icon){
-  margin:0.5rem 0.2rem 0.5rem 0;
-  padding:0;
-  height:1rem;
-  font-size: 0.9rem;
+td {
+  /* padding-top: 0; */
+  padding-bottom: 0;
+}
+.icon-time {
+  content: "";
+  background: url("../assets/storeDetail/icon.png") no-repeat;
+  background-position: 0 0;
+  background-size: 1.9rem 0.9rem;
+  width:0.9rem;
+  /* height: 1rem; */
+}
+.icon-address {
+  content: "";
+  background: url("../assets/storeDetail/icon.png") no-repeat;
+  background-position: -1.2rem 0;
+  background-size: 1.9rem 0.9rem;
+  width:0.9rem;
+  /* height: 1rem; */
+}
+
+.addr-time {
+  font-size: 0.7rem;
+  line-height: 1rem;
+  /* vertical-align: middle; */
+  border-spacing: 0;
+}
+.addr-time-value {
+  font-size: 0.7rem;
+  line-height: 1rem;
+  color: #888888;
+}
+.addr-time-title {
   font-weight: 600;
-  margin-left: 0.9rem;
+  width: 3.5rem;
+  text-align: justify;
+  text-align-last: justify;
+  padding: 0 0.2rem;
+  font-weight: bold;
+  color: #343856;
 }
-div.store-detail-body>div.body-top>div.addr-time>h2.time>span.icon{
-  content: "";
-  background: url("../assets/storeDetail/icon.png") no-repeat;
-  background-size: 2rem 0.9rem;
-  width:0.9rem;
-  height: 1rem;
-  display: inline-block;
-  vertical-align:middle;
-  margin-right: 0.3rem;
-  top: 0.1rem;
-  position: absolute;
+.mark {
+  color: #343856;
 }
-div.store-detail-body>div.body-top>div.addr-time>h2.addr>span.icon{
-  content: "";
-  background: url("../assets/storeDetail/icon.png") no-repeat;
-  background-position: -1.3rem;
-  background-size: 2rem 0.9rem;
-  width:0.9rem;
-  height: 1rem;
-  display: inline-block;
-  vertical-align:middle;
-  margin-right: 0.3rem;
-  top: 0.1rem;
-  position: absolute;
+.mark-h2 {
+  display: inline;
 }
-div.store-detail-body>div.body-top span.score { 
+.open-time ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  padding-bottom: 0.5rem;
+  padding-top: 0.1rem;
+  line-height: 0.9rem;
+}
+.open-time ul > li {
+  line-height: 0.9rem;
+  vertical-align: middle;
+}
+div.store-detail-body>div.body-top span.score {
   display: inline-block;
   position: absolute;
   font-size: 0.9rem;
@@ -349,7 +386,7 @@ div.store-detail-body div.body-top div.tags{
   margin-bottom: 0.5rem;
   margin-top: 0.5rem;
   position: relative;
-  max-height: 3rem;
+  max-height: 2.8rem;
   overflow: hidden;
   font-size: 0;
 }
@@ -358,9 +395,10 @@ div.store-detail-body div.body-top div.tags>span{
   font-size: .7rem;
   border-radius: .3rem;
   color: #FFF;
-  padding: .2rem .3rem;
-  margin:0 .2rem .2rem .2rem;
-  height: 1rem;
+  padding:0 0.3rem;
+  margin:0 .4rem .2rem 0;
+  height: 1.3rem;
+  line-height: 1.3rem;
 }
 div.store-detail-body div.body-top div.tags>span:nth-child(4n+1){
   background: #5D77B9;
@@ -415,11 +453,12 @@ div.store-detail-body div.body-top div.container{
   transform-origin:0 0;
 }
 div.store-detail-body div.body-top.low {
-  height:6rem;
+  /*height:6rem;*/
 }
 div.store-detail-body div.body-top.low div.container {
   transform: scale(0);
   opacity: 0;
+  height: 0;
 }
 div.store-detail-body div.body-bottom {
   width:100%;
@@ -469,8 +508,8 @@ div.store-detail-body ul.comments-list>li>div>span.dislike.black::before{
 
 div.store-detail-body ul.comments-list>li>div>span.like::before{
   content:"";
-  background: url("../assets/storeDetail/like.png");
-  height:1rem;
+  background: url("../assets/storeDetail/like.png") no-repeat;
+  height:1.1rem;
   width: 1rem;
   display: inline-block;
   background-size: 1rem 1rem;
@@ -513,7 +552,7 @@ div.store-detail-body div.tabs>span.chosen{
   border-bottom: solid 2px #5D77B9;
 }
 div.store-detail-body div.tabs>span{
-  padding:0 0.2rem;
+  padding:0 0;
   box-sizing: border-box;
   display: inline-block;
   margin-right: 1rem;

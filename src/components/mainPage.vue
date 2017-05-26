@@ -151,7 +151,7 @@ div.mainpage-body h3{
   position:absolute;
   bottom:0.5rem;
   text-align: center;
-  width:5rem;
+  width: 5rem;
   color:#FFF;
   z-index: 11;
   font-weight: 400;
@@ -468,6 +468,7 @@ module.exports = {
     });
     var prepare = axios.get('login')
       .then(function (response) {
+        response.data.status = true;
         if (response.data.status) {
           return axios.get('index');
         } else {

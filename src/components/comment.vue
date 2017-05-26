@@ -35,14 +35,14 @@
           </li>
           <li v-show="imagesToUpload.length < 3">
             <img
-              class="choose-image" 
+              class="choose-image"
               src="../assets/comment/upload.png"
               v-on:click="selectImg"
             />
             <canvas ref="imageCanvas"></canvas>
           </li>
           <li v-for="fix in Array(Math.max(3 - imagesToUpload.length - 1, 0))" ></li>
-        </ul>        
+        </ul>
       </div>
     </div>
     <div class="comment-footer">
@@ -508,11 +508,12 @@ module.exports = {
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded'
             }
-          }).then(function (response) {
-            if (vueThis.imagesToUpload.find(function (image) { return (image.id === data.id) })) {
-              vueThis.imagesURLToUpload.push(response.data.url);
-            }
           });
+        }).then(function (response) {
+          console.log(response.data);
+          if (vueThis.imagesToUpload.find(function (image) { return (image.id === data.id) })) {
+            vueThis.imagesURLToUpload.push(response.data.url);
+          }
         }));
       }
     });
