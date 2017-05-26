@@ -77,10 +77,10 @@
             </div>
             <p>{{item2.value}}</p>
             <ul class="comment-images-ul" v-if="item2.img && item2.img.length > 0">
-              <li v-for="(src, i) in item2.img" class="comment-images-li">
-                <img :src="src" class="comment-image"></img>
+              <li v-for="(img, i) in item2.img" class="comment-images-li">
+                <img :src="img.msrc" class="comment-image" v-on:click="$preview.open(i, item2.img, { getThumbBoundsFn () { var rect = $event.target.getBoundingClientRect(); return { x: rect.left, y: rect.top, w: $event.target.width }; } });"></img>
               </li>
-              <li v-for="fix in Array(3 - item2.img.length)" class="comment-images-li"></li>
+              <li v-for="fix in 3 - item2.img.length" class="comment-images-li"></li>
             </ul>
           </li>
         </ul>
@@ -608,7 +608,7 @@ div.store-detail-footer>a>span {
 
 .comment-images-li {
   width: 4rem;
-  height: 3.2rem;
+  height: 4rem;
   display: inline-block;
 }
 .comment-image {
