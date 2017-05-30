@@ -54,36 +54,38 @@
           <span v-bind:class="{'chosen':firstChosen}" v-on:click="firstChosen!=true?firstChosen=!firstChosen:0;">最热评论</span>
           <span v-bind:class="{'chosen':!firstChosen}" v-on:click="firstChosen==true?firstChosen=!firstChosen:0;">最新评论</span>
         </div>
-        <ul class="comments-list" id="comments-list">
-          <li v-for="item2 in detail.comments">
-            <div>
-              <span class="date">{{(new Date(item2.date * 1000)).toLocaleDateString()}}</span>
-              <span
-                v-bind:data-id="item2.id"
-                class="dislike"
-                v-bind:class="{'black':item2.disliked}"
-                v-on:click="dislikeOnClick(item2);"
-              >
-                <span>{{item2.dislike}}</span>
-              </span>
-              <span
-                v-bind:data-id="item2.id"
-                class="like"
-                v-bind:class="{'black':item2.liked}"
-                v-on:click="likeOnClick(item2);"
-              >
-                <span>{{item2.like}}</span>
-              </span>
-            </div>
-            <p>{{item2.value}}</p>
-            <ul class="comment-images-ul" v-if="item2.img && item2.img.length > 0">
-              <li v-for="(img, i) in item2.img" class="comment-images-li">
-                <img :src="img.msrc" class="comment-image" v-on:click="$preview.open(i, item2.img, { getThumbBoundsFn () { var rect = $event.target.getBoundingClientRect(); return { x: rect.left, y: rect.top, w: $event.target.width }; } });"></img>
-              </li>
-              <li v-for="fix in 3 - item2.img.length" class="comment-images-li"></li>
-            </ul>
-          </li>
-        </ul>
+        <div class="ul-wrapper">
+          <ul class="comments-list" id="comments-list">
+            <li v-for="item2 in detail.comments">
+              <div>
+                <span class="date">{{(new Date(item2.date * 1000)).toLocaleDateString()}}</span>
+                <span
+                  v-bind:data-id="item2.id"
+                  class="dislike"
+                  v-bind:class="{'black':item2.disliked}"
+                  v-on:click="dislikeOnClick(item2);"
+                >
+                  <span>{{item2.dislike}}</span>
+                </span>
+                <span
+                  v-bind:data-id="item2.id"
+                  class="like"
+                  v-bind:class="{'black':item2.liked}"
+                  v-on:click="likeOnClick(item2);"
+                >
+                  <span>{{item2.like}}</span>
+                </span>
+              </div>
+              <p>{{item2.value}}</p>
+              <ul class="comment-images-ul" v-if="item2.img && item2.img.length > 0">
+                <li v-for="(img, i) in item2.img" class="comment-images-li">
+                  <img :src="img.msrc" class="comment-image" v-on:click="$preview.open(i, item2.img, { getThumbBoundsFn () { var rect = $event.target.getBoundingClientRect(); return { x: rect.left, y: rect.top, w: $event.target.width }; } });"></img>
+                </li>
+                <li v-for="fix in 3 - item2.img.length" class="comment-images-li"></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
     <div class="store-detail-footer" v-if="loaded && !commented">
@@ -181,7 +183,7 @@ module.exports = {
   },
   mounted: function () {
     var vueThis = this;
-    document.querySelector('ul#comments-list').addEventListener('scroll', function () {
+    document.querySelector('div.ul-wrapper').addEventListener('scroll', function () {
       vueThis.low = this.scrollTop >= 10;
     });
     axios.get('store_detail?id=' + vueThis.$route.params.id)
@@ -314,13 +316,13 @@ div.store-detail-body > div.body-top  table.addr-time{
   width: 100%;
 }
 td {
-  /* padding-top: 0; */
+  padding-top: 0;
   padding-bottom: 0;
 }
 .icon-time {
   content: "";
   background: url("../assets/storeDetail/icon.png") no-repeat;
-  background-position: 0 0;
+  background-position: 0 0.05rem;
   background-size: 1.9rem 0.9rem;
   width:0.9rem;
   /* height: 1rem; */
@@ -328,7 +330,7 @@ td {
 .icon-address {
   content: "";
   background: url("../assets/storeDetail/icon.png") no-repeat;
-  background-position: -1.2rem 0;
+  background-position: -1.2rem 0.1rem;
   background-size: 1.9rem 0.9rem;
   width:0.9rem;
   /* height: 1rem; */
@@ -539,9 +541,13 @@ div.store-detail-body ul.comments-list>li{
   padding:0.5rem 1.5rem;
   border-bottom: solid 1px #B6b6b6;
 }
-div.store-detail-body ul.comments-list{
-  height:calc(100% - 1rem);
+div.store-detail-body div.ul-wrapper {
   overflow: auto;
+  -webkit-overflow-scrolling:touch;
+  height: calc(100% - 1rem);
+  width: 100%;
+}
+div.store-detail-body ul.comments-list{
   margin:0;
   padding:0;
   list-style: none;

@@ -364,7 +364,7 @@ div.hot-store div.mainpage-bottom>a:focus{
 div.hot-store div.mainpage-bottom>a{
   display:inline-block;
   border: solid 1px #FFF;
-  border-radius: 0.5rem;
+  border-radius: 0.65rem;
   min-width:3rem;
   max-width:8rem;
   height:1.35rem;
@@ -387,10 +387,10 @@ div.hot-store div.mainpage-bottom>a{
 }
 </style>
 <script>
-var axios = require('axios');
-var wx = require('weixin-js-sdk');
-var ctx;
-var canvas;
+const axios = require('axios');
+const wx = require('weixin-js-sdk');
+let ctx;
+let canvas;
 
 module.exports = {
   data: function () {
@@ -405,8 +405,8 @@ module.exports = {
   },
   methods: {
     searchClick: function (a) {
-      var input = a.target.parentNode.querySelector('input');
-      var parentDiv = a.target.parentNode.parentNode;
+      const input = a.target.parentNode.querySelector('input');
+      const parentDiv = a.target.parentNode.parentNode;
       if (input.value === '' && parentDiv.classList.contains('active')) {
         parentDiv.classList.remove('active');
       } else if (!parentDiv.classList.contains('active')) {
@@ -426,12 +426,12 @@ module.exports = {
       ctx.fillStyle = '#343856';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      var img1 = document.getElementById('xingxing');
+      const img1 = document.getElementById('xingxing');
       if (!img1) {
         return;
       }
       ctx.drawImage(img1, 0, 0, img1.width, img1.height, 0, 0, canvas.width, canvas.width * img1.height / img1.width);
-      var img2 = document.getElementById('wave');
+      const img2 = document.getElementById('wave');
       if (!img2) {
         return;
       }
@@ -439,20 +439,20 @@ module.exports = {
     }
   },
   mounted: function () {
-    var vueThis = this;
+    const vueThis = this;
     vueThis.rem = parseInt(window.getComputedStyle(document.documentElement)['fontSize']);
     canvas = document.querySelector('canvas');
     ctx = document.querySelector('canvas').getContext('2d');
-    var imagesToLoad = [
+    const imagesToLoad = [
       'static/img/bottom.png',
       'static/img/title.png',
       'static/img/columns.png',
       'static/img/wave.png',
       'static/img/xingxing.png'
     ];
-    var promises = imagesToLoad.map(function (src) {
+    const promises = imagesToLoad.map(function (src) {
       return new Promise(function (resolve, reject) {
-        var img = new Image();
+        const img = new Image();
         img.src = src;
         img.onload = function () {
           if (img.width + img.height === 0) {
@@ -466,7 +466,7 @@ module.exports = {
         }
       });
     });
-    var prepare = axios.get('login')
+    const prepare = axios.get('login')
       .then(function (response) {
         response.data.status = true;
         if (response.data.status) {

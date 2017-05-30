@@ -48,7 +48,7 @@
           </div>
         </li>
       </ul>
-      <div class="mask" v-bind:style="{display: isMenuActive ? 'block' : 'none'}"></div>
+      <!--<div class="mask" v-bind:style="{display: isMenuActive ? 'block' : 'none'}"></div>-->
     </div>
     <div class="store-list-footer">
       <router-link to="/newStore"><span></span>添加新店</router-link>

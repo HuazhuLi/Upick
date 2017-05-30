@@ -329,9 +329,10 @@ module.exports = {
       var datas = {
         id: this.$route.params.id,
         title: this.$route.params.title,
-        tags: this.$route.params.tags.split('&'),
-        text: decodeURIComponent(this.$route.params.comment),
-        score: -1
+        tags: this.$route.params.tags === 'empty' ? [] : this.$route.params.tags.split('&'),
+        text: this.$route.params.comment === 'empty' ? '' : decodeURIComponent(this.$route.params.comment),
+        img: JSON.parse(decodeURIComponent(this.$route.params.images)),
+        score: this.score
       };
       datas = encodeURIComponent(JSON.stringify(datas));
       axios.post('comment', {
