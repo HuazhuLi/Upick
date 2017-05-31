@@ -43,7 +43,7 @@
           </div>
           <div class="pics">
             <div class="img-con">
-              <img class="preview-img" v-for="(item2,index) in detail.picURLs.slice(0,3)" v-bind:src="item2.msrc" v-on:click="$preview.open(index, detail.picURLs)"/>
+              <img class="preview-img" v-for="(item2, index) in detail.picURLs.slice(0,3)" v-bind:src="item2.msrc" v-on:click="$preview.open(index, detail.picURLs)"/>
             </div>
             <div class="mask" v-if="detail.picURLs.length>3">+{{detail.picURLs.length-detail.picURLs_.length}}</div>
           </div>
@@ -54,7 +54,7 @@
           <span v-bind:class="{'chosen':firstChosen}" v-on:click="firstChosen!=true?firstChosen=!firstChosen:0;">最热评论</span>
           <span v-bind:class="{'chosen':!firstChosen}" v-on:click="firstChosen==true?firstChosen=!firstChosen:0;">最新评论</span>
         </div>
-        <div class="ul-wrapper">
+        <div class="ul-wrapper" v-iscroll>
           <ul class="comments-list" id="comments-list">
             <li v-for="item2 in detail.comments">
               <div>
@@ -79,7 +79,7 @@
               <p>{{item2.value}}</p>
               <ul class="comment-images-ul" v-if="item2.img && item2.img.length > 0">
                 <li v-for="(img, i) in item2.img" class="comment-images-li">
-                  <img :src="img.msrc" class="comment-image" v-on:click="$preview.open(i, item2.img, { getThumbBoundsFn () { var rect = $event.target.getBoundingClientRect(); return { x: rect.left, y: rect.top, w: $event.target.width }; } });"></img>
+                  <img :src="img.msrc" class="comment-image" v-on:click="$preview.open(i, item2.img, { getThumbBoundsFn () { var rect = $event.target.getBoundingClientRect(); return { x: rect.left, y: rect.top, w: $event.target.width }; } });"/>
                 </li>
                 <li v-for="fix in 3 - item2.img.length" class="comment-images-li"></li>
               </ul>
@@ -205,6 +205,7 @@ module.exports = {
             response = response.data;
             vueThis.commented = response.result;
             vueThis.loaded = true;
+            // vueThis.$refs.iscroll.
           })
           .catch(function (error) {
             if (error)alert('加载失败！');
@@ -228,6 +229,17 @@ module.exports = {
 }
 </script>
 <style scoped>
+.scroll-view {
+  /* -- Attention: This line is extremely important in chrome 55+! -- */
+  touch-action: none;
+  /* -- Attention-- */
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+}
 div.store-detail-root.show{
   opacity: 1;
 }
@@ -419,7 +431,7 @@ div.store-detail-body div.body-top div.pics{
 }
 
 div.store-detail-body div.body-top div.pics>div.img-con{
-  height:3.2rem;
+  height:4.5rem;
   width:100%;
   display: flex;
   flex-direction: row;
@@ -434,8 +446,8 @@ div.store-detail-body div.body-top div.pics>div.mask{
   right:0;
   top:0;
   background: rgba(0,0,0,0.2);
-  width:5.2rem;
-  height:3.2rem;
+  width:4.5rem;
+  height:4.5rem;
   text-align: center;
   line-height: 3rem;
   font-size: 1.5rem;
@@ -443,8 +455,8 @@ div.store-detail-body div.body-top div.pics>div.mask{
 }
 div.store-detail-body div.body-top div.pics > div > img{
   background: #AAAAAA;
-  width:5.2rem;
-  height:3.2rem;
+  width:4.5rem;
+  height:4.5rem;
   display: inline-block;
   margin:0;
   box-sizing: border-box;
@@ -542,7 +554,7 @@ div.store-detail-body ul.comments-list>li{
   border-bottom: solid 1px #B6b6b6;
 }
 div.store-detail-body div.ul-wrapper {
-  overflow: auto;
+  overflow: hidden;
   -webkit-overflow-scrolling:touch;
   height: calc(100% - 1rem);
   width: 100%;

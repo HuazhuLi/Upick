@@ -18,7 +18,17 @@ var comment = require('./components/comment.vue');
 var mark = require('./components/mark.vue');
 var commentSuccess = require('./components/commentSuccess.vue');
 var commentFailed = require('./components/commentFailed.vue');
+import VIscroll from 'viscroll';
 
+Vue.use(VIscroll, {
+  mouseWheel: true,
+  click: true,
+  preventDefault: true,
+  tap: true,
+  bounce: true,
+  disableTouch: false,
+  freeScroll: true
+});
 Vue.use(VueRouter);
 Vue.use(VuePreview.default);
 var routes = [

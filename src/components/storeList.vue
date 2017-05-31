@@ -323,8 +323,8 @@ div.store-list-body>ul ul.tags>li{
 div.store-list-body>ul ul.pic>li{
   display: inline-block;
   text-align: left;
-  height:3.5rem;
-  width:5rem;
+  height: 4rem;
+  width: 4rem;
   font-size: 0.6rem;
   line-height: 1.2rem;
   margin:1rem 0.3rem 0.6rem 0.3rem;
