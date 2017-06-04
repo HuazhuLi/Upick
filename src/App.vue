@@ -2,9 +2,20 @@
   <router-view></router-view>
 </template>
 <script>
+import axios from 'axios'
 module.exports = {
   name: 'app',
-  components: {}
+  components: {},
+  mounted () {
+    this.$router.beforeEach((to, from, next) => {
+      axios.post('/pages_info', {
+        'current_page': from.path,
+        'previous_page': to.path
+      }).then(() => {
+        next();
+      });
+    });
+  }
 };
 </script>
 

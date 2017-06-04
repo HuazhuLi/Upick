@@ -40,7 +40,10 @@ module.exports = {
       '/changeLikeStatus': 'http://202.114.18.13/',
       '/small_store_image': 'http://202.114.18.13/',
       '/store_image': 'http://202.114.18.13/',
-      '/is_commented': 'http://202.114.18.13/'
+      '/is_commented': 'http://202.114.18.13/',
+      '/classes': 'http://202.114.18.13/',
+      '/jsapi': 'http://202.114.18.13/',
+      '/pages_info': 'http://202.114.18.13/'
       // '/is_commented': 'http://118.89.54.28:8087/'
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"

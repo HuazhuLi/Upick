@@ -3,7 +3,7 @@
     <img src="../assets/addSuccess/avatar.png" v-on:load="loadPlus"/>
     <h1>感谢您的评价</h1>
     <p>现在大家已经可以看到你的评价了</p>
-    <button v-on:click="back">返回</button>
+    <button v-on:click="back">完成评价</button>
   </div>
 </template>
 <style scoped>
@@ -43,13 +43,14 @@ div.add-success-root img{
   height:10rem;
 }
 div.add-success-root button{
-  background: url("../assets/addSuccess/back.png");
+  background: url("../assets/noStore/blank_button.png");
   background-size: 100% 100% ;
   width:11rem;
   height:3rem;
   display: block;
   border:0;
-  font-size: 0;
+  font-size: 1rem;
+  color:#FFF;
   margin:0 auto;
   box-shadow: 0 0 1rem 0.2rem rgba(164,221,238,0.78);
   border-radius: 1.5rem;

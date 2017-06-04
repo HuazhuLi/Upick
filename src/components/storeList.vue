@@ -19,12 +19,14 @@
         </ul>
       </div>
     </div>
-    <div class="store-list-body">
+    <div class="store-list-body" v-iscroll>
       <ul>
         <li v-for="item in data" class="store-info-item">
           <ul class="pic" >
             <li v-for="(item3, index) in item.picURLs.slice(0,1)">
               <img v-bind:src="item3.msrc" :ref="item3.msrc.split('/')[1].split('.')[0].split('-')[1]" class="preview-img" v-on:click="
+              $router.push('/storeDetail/'+item.id);
+              return;
               $preview.open(index, item.picURLs, {
                 getThumbBoundsFn: function (i) {
                   var rect = $refs[item3.msrc.split('/')[1].split('.')[0].split('-')[1]][0].getBoundingClientRect()
@@ -152,7 +154,7 @@ div.store-list-header div.menu>ul>li:nth-child(2n-1){
 div.store-list-header div.menu>ul>li:nth-child(2n){
   height:1px;
   margin:0 0.5rem;
-  background: #bbb;
+  background: #dddddd;
 }
 div.store-list-header div.menu>ul>li>button:focus{}
 div.store-list-header div.menu>ul>li>button{
@@ -216,6 +218,7 @@ div.store-list-root div.store-list-body{
   bottom:3.2rem;
   left:0;
   right:0;
+  touch-action: none;
 }
 div.store-list-root div.store-list-footer{
   height: 3.2rem;
@@ -266,7 +269,7 @@ div.store-list-body>ul>li{
   margin:0 0.6rem;
   box-sizing: border-box;
   padding:0 1rem;
-  border-bottom: 1px solid #bbb;
+  border-bottom: 1px solid #dddddd;
 }
 div.store-list-body>ul h2{
   font-size: 0.9rem;
@@ -327,7 +330,7 @@ div.store-list-body>ul ul.pic>li{
   width: 4rem;
   font-size: 0.6rem;
   line-height: 1.2rem;
-  margin:1rem 0.3rem 0.6rem 0.3rem;
+  margin:1rem 0.8rem 0.6rem 0.3rem;
   /* margin: auto; */
 }
 div.store-list-footer>a{
@@ -362,6 +365,7 @@ div.store-list-footer>a>span {
 ul.pic>li>img{
   width:100%;
   height:100%;
+  border-radius: 0.3rem;
 }
 div.mask{
   width: 100%;

@@ -54,7 +54,7 @@
           <span v-bind:class="{'chosen':firstChosen}" v-on:click="firstChosen!=true?firstChosen=!firstChosen:0;">最热评论</span>
           <span v-bind:class="{'chosen':!firstChosen}" v-on:click="firstChosen==true?firstChosen=!firstChosen:0;">最新评论</span>
         </div>
-        <div class="ul-wrapper" v-iscroll>
+        <div class="ul-wrapper scroll-view" v-iscroll>
           <ul class="comments-list" id="comments-list">
             <li v-for="item2 in detail.comments">
               <div>
@@ -79,7 +79,21 @@
               <p>{{item2.value}}</p>
               <ul class="comment-images-ul" v-if="item2.img && item2.img.length > 0">
                 <li v-for="(img, i) in item2.img" class="comment-images-li">
-                  <img :src="img.msrc" class="comment-image" v-on:click="$preview.open(i, item2.img, { getThumbBoundsFn () { var rect = $event.target.getBoundingClientRect(); return { x: rect.left, y: rect.top, w: $event.target.width }; } });"/>
+                  <img :src="img.msrc" class="comment-image"
+                       v-on:click="
+                       commentImageClick(img.src);
+                       $preview.open(i, item2.img, {
+                         shareEl: false,
+                         getThumbBoundsFn () {
+                           var rect = $event.target.getBoundingClientRect();
+                           return {
+                             x: rect.left,
+                             y: rect.top,
+                             w: $event.target.width
+                           };
+                         }
+                       });"
+                  />
                 </li>
                 <li v-for="fix in 3 - item2.img.length" class="comment-images-li"></li>
               </ul>
@@ -166,6 +180,13 @@ module.exports = {
         liked = false;
       }
       this.changeLikeStatus(liked, disliked, item);
+    },
+    commentImageClick (url) {
+      axios.post('/comments/images', `type=hit&image=${url}`, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      });
     }
   },
   watch: {
@@ -233,12 +254,6 @@ module.exports = {
   /* -- Attention: This line is extremely important in chrome 55+! -- */
   touch-action: none;
   /* -- Attention-- */
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  overflow: hidden;
 }
 div.store-detail-root.show{
   opacity: 1;
@@ -342,7 +357,7 @@ td {
 .icon-address {
   content: "";
   background: url("../assets/storeDetail/icon.png") no-repeat;
-  background-position: -1.2rem 0.1rem;
+  background-position: -1.15rem 0.1rem;
   background-size: 1.9rem 0.9rem;
   width:0.9rem;
   /* height: 1rem; */
@@ -479,6 +494,7 @@ div.store-detail-body div.body-bottom {
   flex:1;
   overflow: hidden;
   margin-top: 1rem;
+  position: relative;
 }
 div.store-detail-body ul.comments-list > li > div {
   color:#666666;
@@ -540,6 +556,8 @@ div.store-detail-body ul.comments-list>li>div>span.like.black::before{
 div.store-detail-body ul.comments-list>li>div>span>span{
   font-size: 0.6rem;
   vertical-align: top;
+  width: 0.8rem;
+  display: inline-block;
 }
 div.store-detail-body ul.comments-list>li>div>span.dislike,
 div.store-detail-body ul.comments-list>li>div>span.like{
@@ -551,12 +569,16 @@ div.store-detail-body ul.comments-list>li:last-child{
 }
 div.store-detail-body ul.comments-list>li{
   padding:0.5rem 1.5rem;
-  border-bottom: solid 1px #B6b6b6;
+  border-bottom: solid 1px #DDDDDD;
 }
 div.store-detail-body div.ul-wrapper {
   overflow: hidden;
   -webkit-overflow-scrolling:touch;
-  height: calc(100% - 1rem);
+  position: absolute;
+  top: 1.5rem;
+  bottom: 0;
+  left: 0;
+  right: 0;
   width: 100%;
 }
 div.store-detail-body ul.comments-list{
@@ -577,7 +599,7 @@ div.store-detail-body div.tabs>span{
   height:1.4rem;
 }
 div.store-detail-body div.tabs{
-  border-bottom: 1px solid #B6b6b6;
+  border-bottom: 1px solid #DDDDDD;
   height:1.4rem;
   padding:0 1.5rem;
   font-size: 0.8rem;

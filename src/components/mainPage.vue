@@ -6,7 +6,7 @@
       <canvas v-bind:width="canvasWidth" v-bind:height="canvasHeight"></canvas>
       <h1>Upick</h1>
       <div class="search">
-        <input class="search-input" placeholder="输入搜索内容" v-model="keyword" v-on:keyup.enter="searchClick"/>
+        <input class="search-input" placeholder="搜索店铺" v-model="keyword" v-on:keyup.enter="searchClick"/>
         <button class="search-button" v-on:click="searchClick"><span class="search-button-icon">搜索</span></button>
       </div>
       <div class="topic">
@@ -17,11 +17,11 @@
       <div class="classify">
         <h2>分类</h2>
         <div class="column">
-          <div class="column-block" v-for="(item1,index) in data.list1" v-on:click="buttonClick">
+          <div class="column-block" v-for="(item1, index) in data.list1" v-on:click="buttonClick($event, item1.title);">
             <div class="back">
               <ul v-if="item1.subTitle.length > 0">
                 <li v-for="item2 in item1.subTitle">
-                  <router-link v-bind:to="'storeList/' + item2">{{item2}}</router-link>
+                  <a @click.stop="subTitleClick(item2);">{{item2}}</a>
                 </li>
               </ul>
               <ul v-else>
@@ -415,11 +415,40 @@ module.exports = {
         this.$router.push('/storeList/search/' + this.keyword);
       }
     },
-    buttonClick: function (a) {
+    buttonClick: function (e, name) {
+      axios.post('/classes', {
+        'type': 0,
+        'class': name
+      })
+        .then(response => response.data)
+        .then((data) => {
+          if (data.error) {
+            return Promise.reject(data.error);
+          }
+        })
+        .catch(() => {
+          throw data.error;
+        });
       if (document.querySelectorAll('.active').length !== 0) {
         document.querySelector('.active').classList.remove('active');
       }
-      a.target.parentNode.classList.add('active');
+      e.target.parentNode.classList.add('active');
+    },
+    subTitleClick (name, type) {
+      axios.post('/classes', {
+        'type': 1,
+        'class': name
+      })
+        .then(response => response.data)
+        .then((data) => {
+          if (data.error) {
+            return Promise.reject(data.error);
+          }
+        })
+        .catch(() => {
+          throw data.error;
+        });
+      this.$router.push('storeList/' + name);
     },
     draw: function () {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -460,7 +489,7 @@ module.exports = {
           } else {
             resolve();
           }
-        }
+        };
         img.onerror = function () {
           reject(new Error('图片加载失败'));
         }
@@ -468,7 +497,7 @@ module.exports = {
     });
     const prepare = axios.get('login')
       .then(function (response) {
-        response.data.status = true;
+        // response.data.status = true;
         if (response.data.status) {
           return axios.get('index');
         } else {
@@ -480,15 +509,16 @@ module.exports = {
         response = response.data;
         vueThis.data = response;
       });
-
-    axios.get('http://weixin.bigtech.cc/service/jssdk_config?url=' + encodeURIComponent('http://weixin.bigtech.cc/upick/index.html'))
+    axios.post('/jsapi', {
+      'url': 'http://upick.hustonline.net/'
+    })
     .then(function (response) {
       response = response.data;
       wx.config({
-        debug: false,
-        appId: response.appid,
+        debug: true,
+        appId: response.appId,
         timestamp: response.timestamp,
-        nonceStr: response.noncestr,
+        nonceStr: response.nonceStr,
         signature: response.signature,
         jsApiList: [
           'onMenuShareTimeline',
@@ -496,74 +526,30 @@ module.exports = {
           'onMenuShareQQ',
           'onMenuShareWeibo',
           'onMenuShareQZone'
-        ]
+        ],
+        success: function () {
+          // 用户确认分享后执行的回调函数
+        },
+        cancel: function () {
+          // 用户取消分享后执行的回调函数
+        }
       });
       return new Promise(function (resolve, reject) {
+        const wechatShareConfig = {
+          title: 'Upick | 华科吃喝玩乐，让老司机带你飞！', // 分享标题
+          desc: '华科吃喝玩乐，让老司机带你飞！！', // 分享描述
+          link: 'http://upick.hustonline.net/', // 分享链接
+          imgUrl: 'http://upick.hustonline.net/static/img/title_share.png' // 分享图标
+        };
         wx.ready(function () {
-          wx.onMenuShareTimeline({
-            title: 'Upick | 华科吃喝玩乐，让老司机带你飞！', // 分享标题
-            desc: '华科吃喝玩乐，让老司机带你飞！！', // 分享描述
-            link: 'http://weixin.bigtech.cc/upick/index.html', // 分享链接
-            imgUrl: 'http://weixin.bigtech.cc/upick/static/img/title_share.png', // 分享图标
-            success: function () {
-              // 用户确认分享后执行的回调函数
-            },
-            cancel: function () {
-              // 用户取消分享后执行的回调函数
-            }
-          });
-          wx.onMenuShareAppMessage({
-            title: 'Upick | 华科吃喝玩乐，让老司机带你飞！', // 分享标题
-            desc: '华科吃喝玩乐，让老司机带你飞！！', // 分享描述
-            link: 'http://weixin.bigtech.cc/upick/index.html', // 分享链接
-            imgUrl: 'http://weixin.bigtech.cc/upick/static/img/title_share.png', // 分享图标
-            success: function () {
-              // 用户确认分享后执行的回调函数
-            },
-            cancel: function () {
-              // 用户取消分享后执行的回调函数
-            }
-          });
-          wx.onMenuShareQQ({
-            title: 'Upick | 华科吃喝玩乐，让老司机带你飞！', // 分享标题
-            desc: '华科吃喝玩乐，让老司机带你飞！！', // 分享描述
-            link: 'http://weixin.bigtech.cc/upick/index.html', // 分享链接
-            imgUrl: 'http://weixin.bigtech.cc/upick/static/img/title_share.png', // 分享图标
-            success: function () {
-              // 用户确认分享后执行的回调函数
-            },
-            cancel: function () {
-              // 用户取消分享后执行的回调函数
-            }
-          });
-          wx.onMenuShareWeibo({
-            title: 'Upick | 华科吃喝玩乐，让老司机带你飞！', // 分享标题
-            desc: '华科吃喝玩乐，让老司机带你飞！！', // 分享描述
-            link: 'http://weixin.bigtech.cc/upick/index.html', // 分享链接
-            imgUrl: 'http://weixin.bigtech.cc/upick/static/img/title_share.png', // 分享图标
-            success: function () {
-              // 用户确认分享后执行的回调函数
-            },
-            cancel: function () {
-              // 用户取消分享后执行的回调函数
-            }
-          });
-          wx.onMenuShareQZone({
-            title: 'Upick | 华科吃喝玩乐，让老司机带你飞！', // 分享标题
-            desc: '华科吃喝玩乐，让老司机带你飞！！', // 分享描述
-            link: 'http://weixin.bigtech.cc/upick/index.html', // 分享链接
-            imgUrl: 'http://weixin.bigtech.cc/upick/static/img/title_share.png', // 分享图标
-            success: function () {
-              // 用户确认分享后执行的回调函数
-            },
-            cancel: function () {
-              // 用户取消分享后执行的回调函数
-            }
-          });
-          resolve();
+          wx.onMenuShareTimeline(wechatShareConfig);
+          wx.onMenuShareAppMessage(wechatShareConfig);
+          wx.onMenuShareQQ(wechatShareConfig);
+          wx.onMenuShareWeibo(wechatShareConfig);
+          wx.onMenuShareQZone(wechatShareConfig);
         });
         wx.error(function (res) {
-          // reject(new Error('微信认证失败'));
+          reject(new Error(res));
           console.error('微信认证失败');
         });
       });
