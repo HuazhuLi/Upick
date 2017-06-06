@@ -182,7 +182,7 @@ module.exports = {
       this.changeLikeStatus(liked, disliked, item);
     },
     commentImageClick (url) {
-      axios.post('/comments/images', `type=hit&image=${url}`, {
+      axios.post('comments/images', `type=hit&image=${url}`, {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         }

@@ -416,7 +416,7 @@ module.exports = {
       }
     },
     buttonClick: function (e, name) {
-      axios.post('/classes', {
+      axios.post('classes', {
         'type': 0,
         'class': name
       })
@@ -435,7 +435,7 @@ module.exports = {
       e.target.parentNode.classList.add('active');
     },
     subTitleClick (name, type) {
-      axios.post('/classes', {
+      axios.post('classes', {
         'type': 1,
         'class': name
       })
@@ -501,7 +501,7 @@ module.exports = {
         if (response.data.status) {
           return axios.get('index');
         } else {
-          window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx70014cb42f7c9422&redirect_uri=http%3A//upick.hustonline.net/weixin/access&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
+          window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx70014cb42f7c9422&redirect_uri=http%3A//weixin.bingyan-tech.hustonline.net/upick/weixin/access&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
           return Promise.reject(new Error('需要登录'));
         }
       })
@@ -509,13 +509,17 @@ module.exports = {
         response = response.data;
         vueThis.data = response;
       });
-    axios.post('/jsapi', {
-      'url': 'http://upick.hustonline.net/'
+    axios.post('jsapi', 'url=' + encodeURIComponent('http://weixin.bingyan-tech.hustonline.net/upick/'), {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
     })
     .then(function (response) {
       response = response.data;
+      console.log(encodeURIComponent('http://weixin.bingyan-tech.hustonline.net/upick/'));
+      console.log(response);
       wx.config({
-        debug: true,
+        debug: false,
         appId: response.appId,
         timestamp: response.timestamp,
         nonceStr: response.nonceStr,
@@ -536,10 +540,10 @@ module.exports = {
       });
       return new Promise(function (resolve, reject) {
         const wechatShareConfig = {
-          title: 'Upick | 华科吃喝玩乐，让老司机带你飞！', // 分享标题
-          desc: '华科吃喝玩乐，让老司机带你飞！！', // 分享描述
-          link: 'http://upick.hustonline.net/', // 分享链接
-          imgUrl: 'http://upick.hustonline.net/static/img/title_share.png' // 分享图标
+          title: 'Upick | 让校内坑店无处遁形！', // 分享标题
+          desc: '发现校内优质店铺，\n吐槽校内黑心商家，\n让品质校园生活从Upick开始！', // 分享描述
+          link: 'http://weixin.bingyan-tech.hustonline.net/upick/', // 分享链接
+          imgUrl: 'http://weixin.bingyan-tech.hustonline.net/upick/static/img/title_share.png' // 分享图标
         };
         wx.ready(function () {
           wx.onMenuShareTimeline(wechatShareConfig);

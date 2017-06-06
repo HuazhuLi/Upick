@@ -8,7 +8,7 @@ module.exports = {
   components: {},
   mounted () {
     this.$router.beforeEach((to, from, next) => {
-      axios.post('/pages_info', {
+      axios.post('pages_info', {
         'current_page': from.path,
         'previous_page': to.path
       }).then(() => {
