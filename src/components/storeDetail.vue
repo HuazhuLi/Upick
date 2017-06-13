@@ -3,7 +3,15 @@
     <div class="store-detail-header">
       <!--<a v-on:click="$router.go(-1);"><span class="back"></span></a>-->
       <h1>{{detail.name}}</h1>
-      <div class="tip"></div>
+      <div class="tip">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"  x="0px" y="0px" viewBox="10 18 30 30" enable-background="new 0 0 50 50" xml:space="preserve">
+          <g xmlns="http://www.w3.org/2000/svg">
+            <path fill="#FFFFFF" d="M23.5,19.4c-2.6,3.3-13.4,4.9-13.4,4.9h15.3v-6.2C24.4,18.1,23.5,19.4,23.5,19.4z"></path>
+            <path fill="#FFFFFF" d="M27.2,19.4c2.6,3.3,13.4,4.9,13.4,4.9H25.4v-6.2C26.4,18.1,27.2,19.4,27.2,19.4z"></path>
+
+          </g>
+        </svg>
+      </div>
     </div>
     <div class="store-detail-body">
       <div class="body-top"  v-bind:class="{ 'low' : low && detail.comments.length >= 5}">
@@ -278,7 +286,7 @@ div.store-detail-header{
 
 }
 div.store-detail-header div.tip{
-  background: url("../assets/storeList/tip.png");
+  /*background: url("../assets/storeList/tip.png");*/
   height:0.8rem;
   background-size: 100% 100%;
   width:4rem;

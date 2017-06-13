@@ -11,6 +11,15 @@ module.exports = {
       axios.post('pages_info', {
         'current_page': from.path,
         'previous_page': to.path
+      }, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        transformRequest: [function (data) {
+          return Object.keys(data).map((key) => {
+            return 'key' + '=' + data[key];
+          }).join('&');
+        }]
       }).then(() => {
         next();
       });

@@ -6,7 +6,7 @@
       <!-- <div class="tip"></div> -->
       <div class="search" v-bind:class="{'active': isSearchActive}" v-on:click="searchActive">
         <button v-on:click="search">搜索</button>
-        <input type="text" placeholder="输入搜索内容" v-on:click="inputClick" v-model="keyword" v-on:keyup.enter="search">
+        <input type="text" placeholder="搜索店铺" v-on:click="inputClick" v-model="keyword" v-on:keyup.enter="search">
       </div>
       <div class="menu" v-bind:class="{'active': isMenuActive}" v-on:click="menuActive">
         <button v-on:blur="isMenuActive = false">菜单</button>

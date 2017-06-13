@@ -17,7 +17,7 @@
       <div class="classify">
         <h2>分类</h2>
         <div class="column">
-          <div class="column-block" v-for="(item1, index) in data.list1" v-on:click="buttonClick($event, item1.title);">
+          <div class="column-block" v-for="(item1, index) in data.list1" v-on:click="buttonClick($event, item1);">
             <div class="back">
               <ul v-if="item1.subTitle.length > 0">
                 <li v-for="item2 in item1.subTitle">
@@ -415,10 +415,10 @@ module.exports = {
         this.$router.push('/storeList/search/' + this.keyword);
       }
     },
-    buttonClick: function (e, name) {
+    buttonClick: function (e, item1) {
       axios.post('classes', {
         'type': 0,
-        'class': name
+        'class': item1.name
       })
         .then(response => response.data)
         .then((data) => {
@@ -429,12 +429,16 @@ module.exports = {
         .catch(() => {
           throw data.error;
         });
-      if (document.querySelectorAll('.active').length !== 0) {
-        document.querySelector('.active').classList.remove('active');
+      if (item1.subTitle.length === 1) {
+        this.subTitleClick(item1.subTitle[0]);
+      } else {
+        if (document.querySelectorAll('.active').length !== 0) {
+          document.querySelector('.active').classList.remove('active');
+        }
+        e.target.parentNode.classList.add('active');
       }
-      e.target.parentNode.classList.add('active');
     },
-    subTitleClick (name, type) {
+    subTitleClick (name) {
       axios.post('classes', {
         'type': 1,
         'class': name
@@ -509,15 +513,13 @@ module.exports = {
         response = response.data;
         vueThis.data = response;
       });
-    axios.post('jsapi', 'url=' + encodeURIComponent('http://weixin.bingyan-tech.hustonline.net/upick/'), {
+    axios.post('jsapi', 'url=' + encodeURIComponent(window.location.href.split('#')[0]), {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       }
     })
     .then(function (response) {
       response = response.data;
-      console.log(encodeURIComponent('http://weixin.bingyan-tech.hustonline.net/upick/'));
-      console.log(response);
       wx.config({
         debug: false,
         appId: response.appId,

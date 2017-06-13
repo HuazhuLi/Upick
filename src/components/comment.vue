@@ -10,7 +10,7 @@
     <div class="comment-body">
       <div class="choose-tags">
         <div class="width-ruler"></div>
-        <div class="tags-pre" style="display:block;opacity: 0;position:absolute;z-index:-1;">
+        <div class="tags-pre" style="display: block;opacity: 0;position:absolute;z-index:-1;">
           <button v-for="item in data.tags" v-on:click="select">{{item.title}}</button>
         </div>
         <swipe :auto="0" :continous="false" v-if="loaded">
