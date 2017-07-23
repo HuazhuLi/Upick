@@ -86,6 +86,7 @@
 </template>
 <script>
 import {
+  wait,
   getShopByName,
   getComments,
   likeComment,
@@ -98,8 +99,8 @@ export default {
   data () {
     return {
       shopScore: 0,
-      openTime: '9:00-23:00 7:00-21:00',
-      shopAddress: '址噶哈哈就是房间开放世界级手机看就看你',
+      openTime: '',
+      shopAddress: '',
       imgURLs: [],
       tags: [],
       comments: [],
@@ -108,6 +109,7 @@ export default {
     }
   },
   async mounted () {
+    await wait(400)
     const images = Array.from(document.querySelectorAll('.img-to-load > img'))
     const imagesLoadPromise = images.map((image) => {
       return waitImageToLoad(image)

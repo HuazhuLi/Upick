@@ -49,7 +49,7 @@
   </div>
 </template>
 <script>
-import { getAllTags, addComment } from '../../service'
+import { getAllTags, addComment, wait } from '../../service'
 import { Swipe, SwipeItem } from 'vue-swipe'
 import ImageUpload from '../../components/image-upload.vue'
 export default {
@@ -82,6 +82,7 @@ export default {
   },
   async mounted () {
     window.closeLoading()
+    await wait(400)
     document.title = '评价'
     this.$nextTick(() => {
       this.rem = this.$refs.line.clientHeight
