@@ -192,6 +192,9 @@ export default {
     font-size 0.9rem
     line-height 1rem
     height 1rem
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   h1:before {
     content ''

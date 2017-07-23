@@ -197,10 +197,17 @@ export default {
   h1 {
     margin 0
     font-size 1rem
+    display flex
+    span:not(.mark) {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
     .mark {
       font-size 0.9rem
       margin-left 0.8rem
       color #ffac00
+      flex-shrink 0
     }
   }
 }

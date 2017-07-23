@@ -81,7 +81,10 @@ export default {
         this.shopsInSubtypes = this.shops
       }
       this.$nextTick(() => {
-        this.$emit('loaded', (this.shopsInSubtypes || []).length)
+        let allLength = this.shopsInSubtypes.reduce((sum, shops) => {
+          return sum + shops.length
+        }, 0)
+        this.$emit('loaded', allLength)
         this.lazyLoadCheck(0)
       })
     },
@@ -112,7 +115,11 @@ export default {
     subtype: Array
   },
   watch: {
+    '$props' () {
+      console.log('eeeeee')
+    },
     keyword () {
+      console.log('a')
       this.loadShops()
     },
     subtype () {

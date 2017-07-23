@@ -29,7 +29,9 @@ export default {
     async open (msg, color = '#FF305D', timeToStay = 2500) {
       this.msg = msg
       this.color = color
-      this.show = true
+      window.requestAnimationFrame(() => {
+        this.show = true
+      })
       if (timeToStay === 0) {
         await new Promise((resolve) => {
           this.close = () => {
@@ -46,7 +48,9 @@ export default {
           })
         ])
       }
-      this.show = false
+      window.requestAnimationFrame(() => {
+        this.show = false
+      })
       // will then when tips close
     },
     close () {}
@@ -58,6 +62,7 @@ export default {
   height: 3rem;
   width: 100%;
   position: fixed;
+  z-index: 99999;
   top: 0;
   left: 0;
   opacity: 0;

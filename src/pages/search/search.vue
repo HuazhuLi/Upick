@@ -32,8 +32,8 @@
         </li>
       </ul>
     </div>
-    <router-view v-if="showShopList"
-                 :keyword="[$route.params.keyword]"
+    <router-view v-if="showShopList && $route.params.keyword"
+                 :keyword="keywords"
                  @loaded="catchNoShopError($event)"
     ></router-view>
     <result v-if="!showShopList"
@@ -62,9 +62,16 @@ export default {
       shops: [],
       hot: [],
       history: [],
-      showShopList: true
+      showShopList: true,
+      keywords: []
     }
   },
+//  computed: {
+//    keywords () {
+//      console.log('aa')
+//      return [ this.$route.params.keyword ]
+//    }
+//  },
   watch: {
     keyword () {
       if (!this.$route.params.keyword) {
@@ -73,8 +80,20 @@ export default {
           if (this.keyword) {
             this.previews = (await getShopsByPrefix(this.keyword)).shopList
           }
-        }, 300)
+        }, 500)
+      } else {
+        if (!this.showShopList) {
+          this.showShopList = true
+        }
       }
+    },
+    '$route' (e) {
+      this.keywords = [ this.$route.params.keyword ]
+      console.log(e)
+      this.$forceUpdate()
+    },
+    keywords () {
+      console.log('aaa')
     }
   },
   async mounted () {
@@ -82,6 +101,7 @@ export default {
     document.title = '搜索'
     if (this.$route.params.keyword) {
       this.keyword = this.$route.params.keyword
+      this.keywords = [ this.$route.params.keyword ]
     } else {
       // this.$refs.input.focus()
       this.history = (await searchHistory()).searchHistory
@@ -90,10 +110,8 @@ export default {
   },
   methods: {
     catchNoShopError (n) {
-      if (n <= 0) {
-        // todo
-        this.showShopList = false
-      }
+      console.log(n)
+      this.showShopList = n > 0
     }
   }
 }

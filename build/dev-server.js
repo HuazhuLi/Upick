@@ -42,6 +42,15 @@ compiler.plugin('compilation', function (compilation) {
   })
 })
 
+// app.use((req, res, next) => {
+//   console.log(req.url)
+//   let time = 100
+//   if (req.url === '/0.js') {
+//     time = 10000
+//   }
+//   setTimeout(next, time)
+// })
+
 // fake data used when backend unavailable
 // app.use('/api', fakeData)
 app.use((req, res, next) => {
@@ -88,6 +97,7 @@ devMiddleware.waitUntilValid(() => {
   }
   _resolve()
 })
+
 
 var server = app.listen(port)
 
