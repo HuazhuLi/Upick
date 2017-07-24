@@ -36,7 +36,7 @@
                  :keyword="keywords"
                  @loaded="catchNoShopError($event)"
     ></router-view>
-    <result v-if="!showShopList"
+    <result v-show="!showShopList"
             headText="没有找到该店铺哦～"
             text="到添加新店里提醒我们吧"
             buttonText="添加新店"
