@@ -199,17 +199,25 @@ export default {
   h1 {
     margin 0
     font-size 1rem
+
     display flex
+
     span:not(.mark) {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      white-space nowrap
+      overflow hidden
+      text-overflow ellipsis
+      // display inline-block
     }
     .mark {
-      font-size 0.9rem
       margin-left 0.8rem
       color #ffac00
       flex-shrink 0
+      display inline
+      /**
+       * 太 Dirty 了！！！！，用scale强行baseline一波
+       */
+      transform scale((24/28))
+      transform-origin 50% 100%
     }
   }
 }

@@ -32,7 +32,7 @@
         </li>
       </ul>
     </div>
-    <router-view v-if="showShopList && $route.params.keyword"
+    <router-view v-show="showShopList"
                  :keyword="keywords"
                  @loaded="catchNoShopError($event)"
     ></router-view>
@@ -93,7 +93,7 @@ export default {
       this.$forceUpdate()
     },
     keywords () {
-      console.log('aaa')
+      console.log('aaaaaaa')
     }
   },
   async mounted () {

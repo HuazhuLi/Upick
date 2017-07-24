@@ -2,7 +2,7 @@
   <div class="root" ref="root">
     <swiper ref="swiper" :options="swiperOption">
       <swiper-slide v-for="(shopsInSubtype, i) in shopsInSubtypes" :key="i">
-        <ul @scroll="lazyLoadCheck(i)" :style="{ 'height': initialHeight }">
+        <ul v-if="shopsInSubtype.length > 0" @scroll="lazyLoadCheck(i)" :style="{ 'height': initialHeight }">
           <list-item v-for="(shop, index) in shopsInSubtype"
                      :key="index"
                      :ref="'listItems' + i"
@@ -62,7 +62,8 @@ export default {
   },
   mounted () {
     setTimeout(() => {
-      // this.loadShops()
+      console.log('mounted')
+      this.loadShops()
       this.$nextTick(() => {
         this.initialHeight = this.$refs.root.clientHeight + 'px'
         this.$refs.swiper.options.onSlideChangeEnd = this.onSlideChangeEnd
@@ -115,11 +116,7 @@ export default {
     subtype: Array
   },
   watch: {
-    '$props' () {
-      console.log('eeeeee')
-    },
     keyword () {
-      console.log('a')
       this.loadShops()
     },
     subtype () {
