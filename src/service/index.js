@@ -160,6 +160,7 @@ export async function waitImageToLoad (imageNode) {
     }
   })
 }
+
 export async function getShopByName (name) {
   let shop = store.state.cachedShops.filter(shop => shop.shopName === name)
   if (shop.length <= 0) {
@@ -259,5 +260,32 @@ export async function cancelDislikeComment (authorOpenid, issueTime) {
     'request_type': 6,
     'author_openid': authorOpenid,
     'issue_time': issueTime
+  }).then(objectToCamel)
+}
+
+export async function getTypes () {
+  return await http.get(`${root}/shops/types`)
+    .then(objectToCamel)
+    .then(({ types }) => {
+      return types.reduce((ret, type) => {
+        ret.push(...type.subtypes)
+        return ret
+      }, [])
+    })
+}
+
+export async function userAddNewShop (shopName, shopLocation, src, msrc, width, height) {
+  return await http.post(`${root}/shops`, {
+    'request_type': 1,
+    'shop_name': shopName,
+    'shop_address': shopLocation,
+    'imgs': [
+      {
+        src,
+        msrc,
+        width,
+        height
+      }
+    ]
   }).then(objectToCamel)
 }

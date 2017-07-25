@@ -1,13 +1,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import entry from '../pages/entry/entry.vue'
-import search from '../pages/search/search.vue'
+import entry from '../pages/entry/index.vue'
+import search from '../pages/search/index.vue'
 import shopList from '../components/shop-list.vue'
-import list from '../pages/list/list.vue'
-import comment from '../pages/comment/comment.vue'
-import result from '../pages/result/result.vue'
-import detail from '../pages/detail/detail.vue'
+import list from '../pages/list/index.vue'
+import comment from '../pages/comment/index.vue'
+import result from '../pages/result/index.vue'
+import detail from '../pages/detail/index.vue'
+import add from '../pages/add/index.vue'
 
 Vue.use(Router)
 
@@ -52,6 +53,10 @@ export default new Router({
     {
       path: '/detail/:name',
       component: detail
+    },
+    {
+      path: '/add',
+      component: add
     }
   ]
 })

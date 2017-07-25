@@ -84,7 +84,6 @@ export default {
       while (i < n) {
         this.shopTypes.push(shopTypes.slice(i, i += 3))
       }
-      console.log(this.shopTypes)
     } catch (error) {
       this.$tip.open('加载失败！请刷新')
       throw error

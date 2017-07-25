@@ -70,7 +70,7 @@ export default {
           reject(err)
         }
       })
-      if (file.size / 1024 > 200) {
+      if (file.size / 1024 > 500) {
         let image = new Image()
         image.src = base64String
         await new Promise((resolve) => {

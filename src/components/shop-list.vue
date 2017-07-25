@@ -62,7 +62,7 @@ export default {
   },
   mounted () {
     setTimeout(() => {
-      console.log('mounted')
+      // console.log('mounted')
       this.loadShops()
       this.$nextTick(() => {
         this.initialHeight = this.$refs.root.clientHeight + 'px'
@@ -122,7 +122,7 @@ export default {
     subtype () {
       setTimeout(() => {
         this.loadShops()
-      }, 400)
+      }, 450)
     },
     shops () {
       this.loadShops()
