@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { getTypes, wait, uploadImage, userAddNewShop } from '../../service'
+import { getTypes, wait, uploadImage, userAddNewShop, waitImageToLoad } from '../../service'
 export default {
   data () {
     return {
@@ -155,6 +155,13 @@ export default {
     }
   },
   async mounted () {
+    // 生成图片加载的 Promise
+    const images = Array.from(document.querySelectorAll('.img-to-load > img'))
+    const imagesLoadPromise = images.map((image) => {
+      return waitImageToLoad(image)
+    })
+    // 等待图片加载的 Promise resolve
+    await Promise.all(imagesLoadPromise)
     window.closeLoading()
     this.items = await getTypes()
   }
