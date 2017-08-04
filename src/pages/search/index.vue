@@ -19,7 +19,7 @@
       <div class="history" v-if="history.length > 0">
         <h2>历史记录</h2>
         <ul class="hot-search-list">
-          <li v-for="keyword in history" @click="$router.push(`/search/${keyword}`)">{{keyword}}</li>
+          <li v-for="record in history" @click="$router.push(`/search/${record.searchRecord.join('')}`)">{{record.searchRecord.join('')}}</li>
         </ul>
       </div>
     </div>
