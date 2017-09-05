@@ -149,6 +149,7 @@ export default {
           this.imageData.width,
           this.imageData.height
         )
+        this.$tip.open('添加成功!', '#50d467', 1500)
       } else {
         this.$tip.open('请完整填写表单!')
       }

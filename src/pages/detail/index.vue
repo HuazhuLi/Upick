@@ -57,7 +57,7 @@
               <div class="name-date">
                 <span class="span-name">{{comment.authorNickname}}</span>
                 <span class="span-date">
-                  {{(new Date(comment.issueTime * 1000)).toLocaleDateString()}}
+                  {{(new Date(comment.issueTime)).toLocaleDateString()}}
                 </span>
               </div>
               <div class="like" @click="updateOperation(comment, 0)"
@@ -71,7 +71,7 @@
               </div>
             </div>
             <div class="text">
-              <p>{{comment.text}}</p>
+              <p>{{comment.commentText}}</p>
               <ul>
               </ul>
             </div>
@@ -142,7 +142,7 @@ export default {
     checkScroll (e) {
       const wrapper = e.target
       this.shrink =
-        wrapper.scrollTop > wrapper.firstElementChild.clientHeight * 3
+        wrapper.scrollTop > wrapper.firstElementChild.clientHeight * 5
     },
     updateOperation (comment, operation) {
       if (comment.operation === operation) {

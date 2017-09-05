@@ -145,7 +145,12 @@ export default {
           this.currentMark,
           this.text,
           this.activeTags.map(i => this.allTags[i].tagName),
-          images.map(resp => resp.url)
+          images.map(resp => ({
+            src: resp.url,
+            msrc: resp.simgUrl,
+            width: resp.width,
+            height: resp.height
+          }))
         )
       } catch (e) {
         this.$tip.open('评论失败！请刷新', 'rgb(255,48,93)', 1500)

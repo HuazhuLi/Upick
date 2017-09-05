@@ -189,6 +189,7 @@ export async function getAllTags (name) {
  */
 export async function uploadImage (imageBase64String) {
   return await http.post(`${root}/comments/images`, {
+    'type': 'upload',
     'image': imageBase64String.split(',')[1]
   }, {
     headers: {
@@ -205,13 +206,13 @@ export async function uploadImage (imageBase64String) {
  * @returns {Promise<Object>}
  */
 export async function addComment (shopName, shopScore, commentText, shopTags, imagesURL) {
-  return await http.post(`${root}/shops/comments`, {
+  return await http.post(`${root}/comments`, {
     'request_type': 1,
     'shop_name': shopName,
     'shop_score': shopScore,
     'comment_text': commentText,
     'shop_tags': shopTags,
-    'img_urls': imagesURL
+    'imgs': imagesURL
   }).then(objectToCamel)
 }
 
@@ -227,48 +228,57 @@ export async function wait (time) {
  * @returns {Promise.<Array.<Object>>}
  */
 export async function getComments (shopName) {
-  return await http.post(`${root}/shops/comments`, {
-    'request_type': 2,
-    'shop_name': shopName
+  return await http.get(`${root}/comments`, {
+    params: {
+      'shop_name': shopName
+    }
   }).then(objectToCamel)
 }
 
 export async function likeComment (authorOpenid, issueTime) {
-  return await http.post(`${root}/shops/comments`, {
-    'request_type': 3,
+  return await http.post(`${root}/comments`, {
+    'request_type': 2,
     'author_openid': authorOpenid,
-    'issue_time': issueTime
+    'issue_time': issueTime,
+    'like_status': true, // 是否点赞
+    'dislike_status': false // 是否踩
   }).then(objectToCamel)
 }
 
 export async function cancelLikeComment (authorOpenid, issueTime) {
-  return await http.post(`${root}/shops/comments`, {
-    'request_type': 5,
+  return await http.post(`${root}/comments`, {
+    'request_type': 2,
     'author_openid': authorOpenid,
-    'issue_time': issueTime
+    'issue_time': issueTime,
+    'like_status': false, // 是否点赞
+    'dislike_status': false // 是否踩
   }).then(objectToCamel)
 }
 
 export async function dislikeComment (authorOpenid, issueTime) {
-  return await http.post(`${root}/shops/comments`, {
-    'request_type': 4,
+  return await http.post(`${root}/comments`, {
+    'request_type': 2,
     'author_openid': authorOpenid,
-    'issue_time': issueTime
+    'issue_time': issueTime,
+    'like_status': false, // 是否点赞
+    'dislike_status': true // 是否踩
   }).then(objectToCamel)
 }
 
 export async function cancelDislikeComment (authorOpenid, issueTime) {
-  return await http.post(`${root}/shops/comments`, {
-    'request_type': 6,
+  return await http.post(`${root}/comments`, {
+    'request_type': 2,
     'author_openid': authorOpenid,
-    'issue_time': issueTime
+    'issue_time': issueTime,
+    'like_status': false, // 是否点赞
+    'dislike_status': false // 是否踩
   }).then(objectToCamel)
 }
 
 export async function getTypes () {
   return await http.get(`${root}/shops/types`)
     .then(objectToCamel)
-    .then(({ types }) => {
+    .then(types => {
       return types.reduce((ret, type) => {
         ret.push(...type.subtypes)
         return ret
