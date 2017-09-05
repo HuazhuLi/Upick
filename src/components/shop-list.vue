@@ -6,7 +6,7 @@
           <list-item v-for="(shop, index) in shopsInSubtype"
                      :key="index"
                      :ref="'listItems' + i"
-                     :iconSrc="shop.imgs[0].msrc ? shop.imgs[0].msrc : shop.imgs[0].src"
+                     :iconSrc="shop.imgs[0] ? shop.imgs[0].msrc || shop.imgs[0].src : ''"
                      :shopName="shop.shopName"
                      :tags="shop.shopTags"
                      :score="shop.shopScore"

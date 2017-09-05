@@ -28,8 +28,8 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/api': 'http://debug.upick.hustonline.net/',
-      '/shop_images': 'http://debug.upick.hustonline.net/',
+      '/api': 'http://dev.upick.hustonline.net/',
+      '/shop_images': 'http://dev.upick.hustonline.net/',
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

@@ -13,13 +13,13 @@
       <div class="hot-search" v-if="hot.length > 0">
         <h2>热门搜索</h2>
         <ul class="hot-search-list">
-          <li v-for="keyword in hot" @click="$router.push(`/search/${keyword}`)">{{keyword}}</li>
+          <li v-for="keyword in hot" @click="$router.push(`/search/${keyword.searchWord}`)">{{keyword.searchWord}}</li>
         </ul>
       </div>
       <div class="history" v-if="history.length > 0">
         <h2>历史记录</h2>
         <ul class="hot-search-list">
-          <li v-for="record in history" @click="$router.push(`/search/${record.searchRecord.join('')}`)">{{record.searchRecord.join('')}}</li>
+          <li v-for="record in history" @click="$router.push(`/search/${record}`)">{{record}}</li>
         </ul>
       </div>
     </div>
@@ -89,11 +89,10 @@ export default {
     },
     '$route' (e) {
       this.keywords = [ this.$route.params.keyword ]
-      console.log(e)
       this.$forceUpdate()
     },
     keywords () {
-      console.log('aaaaaaa')
+      // todo
     }
   },
   async mounted () {
@@ -104,13 +103,12 @@ export default {
       this.keywords = [ this.$route.params.keyword ]
     } else {
       // this.$refs.input.focus()
-      this.history = (await searchHistory()).searchHistory
       this.hot = (await hotRecords()).hotRecords
+      this.history = (await searchHistory()).searchHistory
     }
   },
   methods: {
     catchNoShopError (n) {
-      console.log(n)
       this.showShopList = n > 0
     }
   }

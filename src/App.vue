@@ -7,6 +7,8 @@
 </template>
 
 <script>
+import wx from 'weixin-js-sdk'
+import { wechatConfig } from './service'
 export default {
   name: 'app',
   data () {
@@ -14,9 +16,48 @@ export default {
       transitionName: 'slide-right'
     }
   },
-  mounted () {
+  async mounted () {
     this.$nextTick(() => {
       this.$refs.root.style.height = window.innerHeight + 'px'
+    })
+    const response = await wechatConfig()
+    console.log(response)
+    wx.config({
+      debug: false,
+      appId: response.appId,
+      timestamp: response.timestamp,
+      nonceStr: response.nonceStr,
+      signature: response.signature,
+      jsApiList: [
+        'onMenuShareTimeline',
+        'onMenuShareAppMessage',
+        'onMenuShareQQ',
+        'onMenuShareWeibo',
+        'onMenuShareQZone'
+      ],
+      success: function () {
+        // 用户确认分享后执行的回调函数
+      },
+      cancel: function () {
+        // 用户取消分享后执行的回调函数
+      }
+    })
+    const wechatShareConfig = {
+      title: 'Upick | 让校内坑店无处遁形！', // 分享标题
+      desc: '发现校内优质店铺，\n吐槽校内黑心商家，\n让品质校园生活从Upick开始！', // 分享描述
+      link: 'http://weixin.bingyan-tech.hustonline.net/upick/', // 分享链接
+      imgUrl: 'http://weixin.bingyan-tech.hustonline.net/upick/static/img/title_share.png' // 分享图标
+    }
+    wx.ready(function () {
+      wx.onMenuShareTimeline(wechatShareConfig)
+      wx.onMenuShareAppMessage(wechatShareConfig)
+      wx.onMenuShareQQ(wechatShareConfig)
+      wx.onMenuShareWeibo(wechatShareConfig)
+      wx.onMenuShareQZone(wechatShareConfig)
+    })
+    wx.error(function (res) {
+      console.log(res)
+      console.error('微信认证失败')
     })
   },
   watch: {

@@ -96,14 +96,16 @@ export async function getShopsByType (type) {
   }
   let res
   try {
-    res = await http.post(`${root}/shops/list`, {
-      'request_type': 1,
-      'shop_type': type
-    }, {
+    res = await http.get(`${root}/shops/list`, {
+      params: {
+        'request_type': 1,
+        'shop_type': type
+      },
       headers: {
         'content-type': 'application/json'
       }
     }).then(objectToCamel)
+    console.log(res)
     shopsByType.unshift(...res.shopList)
     store.state.cachedRequest.push({
       requestType: 1,
@@ -175,7 +177,7 @@ export async function searchHistory () {
 }
 
 export async function hotRecords () {
-  return await http.get(`${root}/shops/search_history/hot_records`).then(objectToCamel)
+  return await http.get(`${root}/shops/hot_records`).then(objectToCamel)
 }
 
 export async function getAllTags (name) {
@@ -287,5 +289,11 @@ export async function userAddNewShop (shopName, shopLocation, src, msrc, width, 
         height
       }
     ]
+  }).then(objectToCamel)
+}
+
+export async function wechatConfig () {
+  return await http.post(`${root}/jsapi`, {
+    url: encodeURIComponent(window.location.href.split('#')[0])
   }).then(objectToCamel)
 }

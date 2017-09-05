@@ -55,7 +55,7 @@ compiler.plugin('compilation', function (compilation) {
 // app.use('/api', fakeData)
 app.use((req, res, next) => {
   // console.log(req)
-  req.headers.host = 'debug.upick.hustonline.net'
+  req.headers.host = 'dev.upick.hustonline.net'
   next()
 })
 // proxy api requests

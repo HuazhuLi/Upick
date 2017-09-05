@@ -262,9 +262,11 @@ h2, h3, h4 {
     flex-shrink 0
     ul {
       list-style none
-      margin 0
-      padding 1rem
+      margin 1rem
+      padding 0
       text-align center
+      height 4.1rem
+      overflow hidden
       li {
         display inline-block
         font-size 0

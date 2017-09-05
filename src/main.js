@@ -1,13 +1,4 @@
-/**
- *
- *
- *
- *
- *
- */
-
 import './plugins/zhugeio'
-
 const consoleLogStyle = `
 line-height: 50px;
 height: 50px;
