@@ -50,7 +50,7 @@
         >最热评论</span>
       </div>
       <ul class="comments-list" @scroll="checkScroll">
-        <li v-for="comment in comments">
+        <li v-for="comment in comments" class="item">
           <img :src="comment.authorHeadimg">
           <div class="comment-value">
             <div class="name">
@@ -73,6 +73,9 @@
             <div class="text">
               <p>{{comment.commentText}}</p>
               <ul>
+                <li v-for="img in comment.imgs">
+                  <img :src="img.src"/>
+                </li>
               </ul>
             </div>
           </div>
@@ -367,7 +370,7 @@ export default {
     padding 0
     margin 0
     overflow auto
-    li {
+    li.item {
       position relative
       padding 1rem 1.5rem
       display flex
@@ -441,6 +444,26 @@ export default {
       margin-top 0.5rem
       color #717171
       font-size 0.7rem
+    }
+    ul {
+      $width = 3.6rem
+      list-style none
+      max-height $width
+      margin 0
+      margin-top 1rem
+      padding 0
+      display flex
+      flex-direction row
+      li {
+        margin 0
+        margin-right 0.5rem
+        height $width
+        width $width
+        img {
+          height $width
+          width $width
+        }
+      }
     }
   }
 }
