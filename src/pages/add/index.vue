@@ -150,6 +150,7 @@ export default {
           this.imageData.height
         )
         this.$tip.open('添加成功!', '#50d467', 1500)
+        setTimeout(() => this.$router.go(-1), 100)
       } else {
         this.$tip.open('请完整填写表单!')
       }

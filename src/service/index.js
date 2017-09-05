@@ -120,10 +120,11 @@ export async function getShopsByType (type) {
 }
 // 根据关键词搜索店铺
 export async function searchShops (keyword) {
-  let res = await http.post(`${root}/shops/list`, {
-    'request_type': 3,
-    'key_word': keyword
-  }, {
+  let res = await http.get(`${root}/shops/list`, {
+    params: {
+      'request_type': 3,
+      'key_word': keyword
+    },
     headers: {
       'content-type': 'application/json'
     }
