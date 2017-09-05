@@ -260,17 +260,20 @@ h2, h3, h4 {
   }
   .hot-shops {
     flex-shrink 0
+    padding 1rem
+    font-size 0
     ul {
       list-style none
-      margin 1rem
+      margin 0
       padding 0
       text-align center
-      height 4.1rem
+      height 3.8rem
       overflow hidden
       li {
         display inline-block
         font-size 0
-        margin-bottom 0.5rem
+        height 1.3rem
+        margin 0.4rem 0 0.2rem
         .shop {
           display inline-block
           padding 0 0.7rem
