@@ -140,6 +140,7 @@ a {
         background-color #FFD273
         padding 0 0.5rem
         margin-right 0.5rem
+        margin-bottom 3px
       }
       li.negative {
         background-color #e8e8e8

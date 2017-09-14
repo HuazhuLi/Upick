@@ -27,7 +27,7 @@
       </div>
     </div>
     <div class="images" :style="{'height': shrink ? 0 : ''}">
-      <img :src="img.src" v-for="img in imgURLs">
+      <img :src="img.src" v-for="img in imgURLs" @click="previewImage(imgURLs)">
     </div>
     <div class="tags" :style="{'height': shrink ? 0 : ''}">
       <ul v-if="tags && tags.length > 0">
@@ -74,7 +74,7 @@
               <p>{{comment.commentText}}</p>
               <ul>
                 <li v-for="img in comment.imgs">
-                  <img :src="img.src"/>
+                  <img :src="img.src" @click="previewImage(comment.imgs)"/>
                 </li>
               </ul>
             </div>
@@ -98,6 +98,9 @@ import {
   cancelLikeComment,
   waitImageToLoad
 } from '../../service'
+
+import wx from 'weixin-js-sdk'
+
 export default {
   data () {
     return {
@@ -173,6 +176,12 @@ export default {
       } else {
         return 0
       }
+    },
+    previewImage (imgs) {
+      wx.previewImage({
+        current: imgs[0].src, // 当前显示图片的http链接
+        urls: imgs.map(img => img.src) // 需要预览的图片http链接列表
+      })
     }
   },
   watch: {
@@ -324,6 +333,7 @@ export default {
       background-color #FFD273
       padding 0 0.5rem
       margin-right 0.5rem
+      margin-bottom 3px
     }
     li.negative {
       background-color #e8e8e8

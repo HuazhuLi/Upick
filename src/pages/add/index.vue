@@ -157,6 +157,7 @@ export default {
     }
   },
   async mounted () {
+    document.title = '添加新店'
     // 生成图片加载的 Promise
     const images = Array.from(document.querySelectorAll('.img-to-load > img'))
     const imagesLoadPromise = images.map((image) => {

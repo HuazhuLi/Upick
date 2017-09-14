@@ -21,7 +21,6 @@ export default {
       this.$refs.root.style.height = window.innerHeight + 'px'
     })
     const response = await wechatConfig()
-    console.log(response)
     wx.config({
       debug: false,
       appId: response.appId,
@@ -33,7 +32,8 @@ export default {
         'onMenuShareAppMessage',
         'onMenuShareQQ',
         'onMenuShareWeibo',
-        'onMenuShareQZone'
+        'onMenuShareQZone',
+        'previewImage'
       ],
       success: function () {
         // 用户确认分享后执行的回调函数
@@ -45,7 +45,7 @@ export default {
     const wechatShareConfig = {
       title: 'Upick | 让校内坑店无处遁形！', // 分享标题
       desc: '发现校内优质店铺，\n吐槽校内黑心商家，\n让品质校园生活从Upick开始！', // 分享描述
-      link: 'http://weixin.bingyan-tech.hustonline.net/upick/', // 分享链接
+      link: `http://weixin.bingyan-tech.hustonline.net/upick/jump.html?to=${encodeURIComponent(window.location.href)}`, // 分享链接
       imgUrl: 'http://weixin.bingyan-tech.hustonline.net/upick/static/img/title_share.png' // 分享图标
     }
     wx.ready(function () {
