@@ -58,7 +58,7 @@ import { getIndex, waitImageToLoad } from '../../service'
 export default {
   data () {
     return {
-      slogan: '品质校园生活从 Upick 开始！',
+      slogan: '品质校园生活从华科优铺开始！',
       hotShops: [],
       shopTypes: [],
       typeLineHeight: 0
@@ -76,7 +76,7 @@ export default {
       // 等待图片加载的 Promise resolve
       await Promise.all(imagesLoadPromise)
       window.closeLoading()
-      document.title = 'Upick | 校内店铺评价'
+      document.title = '华科优铺 Upick | 校内店铺评价'
       this.slogan = slogan
       this.hotShops = popularShops
       let i = 0
