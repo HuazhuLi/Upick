@@ -179,11 +179,12 @@ h2, h3, h4 {
       top -1rem
       bottom 0
       margin auto
-      height 2.4rem
-      width (2.4 * 205 / 94)rem
+      height 1.8rem
+      width (@height * 334 / 67)rem
       font-size 0
       background-image url('./logo.png');
       background-size 100%
+      background-position center center
       background-repeat no-repeat
     }
     img {
