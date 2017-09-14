@@ -27,7 +27,7 @@
       </div>
     </div>
     <div class="images" :style="{'height': shrink ? 0 : ''}">
-      <img :src="img.src" v-for="img in imgURLs" @click="previewImage(imgURLs)">
+      <img :src="img.src" v-for="(img, i) in imgURLs" @click="previewImage(imgURLs, i)">
     </div>
     <div class="tags" :style="{'height': shrink ? 0 : ''}">
       <ul v-if="tags && tags.length > 0">
@@ -73,8 +73,8 @@
             <div class="text">
               <p>{{comment.commentText}}</p>
               <ul>
-                <li v-for="img in comment.imgs">
-                  <img :src="img.src" @click="previewImage(comment.imgs)"/>
+                <li v-for="(img, i) in comment.imgs">
+                  <img :src="img.src" @click="previewImage(comment.imgs, i)"/>
                 </li>
               </ul>
             </div>
@@ -177,10 +177,11 @@ export default {
         return 0
       }
     },
-    previewImage (imgs) {
+    previewImage (imgs, i) {
+      const urls = imgs.map(img => window.location.href.split('#')[0] + img.src)
       wx.previewImage({
-        current: imgs[0].src, // 当前显示图片的http链接
-        urls: imgs.map(img => img.src) // 需要预览的图片http链接列表
+        current: urls[i], // 当前显示图片的http链接
+        urls // 需要预览的图片http链接列表
       })
     }
   },
