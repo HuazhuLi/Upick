@@ -44,7 +44,6 @@ export default {
         }
       })
       const makeConfig = () => {
-        console.log(this.$route)
         const jumpBearer = 'http://weixin.bingyan-tech.hustonline.net/devupick/jump.html'
         const imgUrl = 'http://weixin.bingyan-tech.hustonline.net/devupick/static/img/title-share.png'
         let wechatShareConfig
