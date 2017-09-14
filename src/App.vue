@@ -20,45 +20,6 @@ export default {
     this.$nextTick(() => {
       this.$refs.root.style.height = window.innerHeight + 'px'
     })
-//    const response = await wechatConfig()
-//    wx.config({
-//      debug: false,
-//      appId: response.appId,
-//      timestamp: response.timestamp,
-//      nonceStr: response.nonceStr,
-//      signature: response.signature,
-//      jsApiList: [
-//        'onMenuShareTimeline',
-//        'onMenuShareAppMessage',
-//        'onMenuShareQQ',
-//        'onMenuShareWeibo',
-//        'onMenuShareQZone',
-//        'previewImage'
-//      ],
-//      success: function () {
-//        // 用户确认分享后执行的回调函数
-//      },
-//      cancel: function () {
-//        // 用户取消分享后执行的回调函数
-//      }
-//    })
-//    const wechatShareConfig = {
-//      title: 'Upick | 让校内坑店无处遁形！', // 分享标题
-//      desc: '发现校内优质店铺，\n吐槽校内黑心商家，\n让品质校园生活从Upick开始！', // 分享描述
-//      link: `http://weixin.bingyan-tech.hustonline.net/upick/jump.html?to=${encodeURIComponent(window.location.href)}`, // 分享链接
-//      imgUrl: 'http://weixin.bingyan-tech.hustonline.net/upick/static/img/title_share.png' // 分享图标
-//    }
-//    wx.ready(function () {
-//      wx.onMenuShareTimeline(wechatShareConfig)
-//      wx.onMenuShareAppMessage(wechatShareConfig)
-//      wx.onMenuShareQQ(wechatShareConfig)
-//      wx.onMenuShareWeibo(wechatShareConfig)
-//      wx.onMenuShareQZone(wechatShareConfig)
-//    })
-//    wx.error(function (res) {
-//      console.log(res)
-//      console.error('微信认证失败')
-//    })
     setTimeout(async () => {
       const response = await wechatConfig()
       wx.config({
@@ -72,7 +33,8 @@ export default {
           'onMenuShareAppMessage',
           'onMenuShareQQ',
           'onMenuShareWeibo',
-          'onMenuShareQZone'
+          'onMenuShareQZone',
+          'previewImage'
         ],
         success: function () {
           // 用户确认分享后执行的回调函数
@@ -81,7 +43,8 @@ export default {
           // 用户取消分享后执行的回调函数
         }
       })
-      function makeConfig () {
+      const makeConfig = () => {
+        console.log(this.$route)
         const jumpBearer = 'http://weixin.bingyan-tech.hustonline.net/devupick/jump.html'
         const imgUrl = 'http://weixin.bingyan-tech.hustonline.net/devupick/static/img/title-share.png'
         let wechatShareConfig
