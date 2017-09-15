@@ -152,12 +152,15 @@ export default {
             height: resp.height
           }))
         )
+        await this.$tip.open('提交成功！', '#50d467', 1000)
+        this.$router.push(`/result/comment-success/${this.$route.params.name}`)
       } catch (e) {
-        this.$tip.open('评论失败！请刷新', 'rgb(255,48,93)', 1500)
-        throw e
+        if (e.message.indexOf('400') >= 0) {
+          this.$tip.open('每天只能评论三次哦！', '#FF9833', 1500)
+        } else {
+          this.$tip.open('评论失败！请刷新', 'rgb(255,48,93)', 1500)
+        }
       }
-      await this.$tip.open('提交成功！', '#50d467', 1000)
-      this.$router.push(`/result/comment-success/${this.$route.params.name}`)
     },
     isActive (index) {
       return this.activeTags.find(active => active === index) !== undefined
