@@ -76,7 +76,7 @@ export default {
       // 等待图片加载的 Promise resolve
       await Promise.all(imagesLoadPromise)
       window.closeLoading()
-      document.title = '华科优铺 Upick | 校内店铺评价'
+      document.title = '华科优铺 | 校内店铺评价'
       this.slogan = slogan
       this.hotShops = popularShops
       let i = 0

@@ -8,7 +8,7 @@
 
 <script>
 import wx from 'weixin-js-sdk'
-import { wechatConfig, getShopByName } from './service'
+import { wechatConfig, getShopByName, checkLoginStatus } from './service'
 export default {
   name: 'app',
   data () {
@@ -21,12 +21,26 @@ export default {
       this.$refs.root.style.height = window.innerHeight + 'px'
     })
     this.initConfig()
+    this.makeConfig()
+    if ((await checkLoginStatus()) === false) {
+      window.title = '需要登录！'
+      window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx70014cb42f7c9422&redirect_uri=http%3A//weixin.bingyan-tech.hustonline.net/devupick/api/v2/weixin/access&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
+    }
   },
   methods: {
     async makeConfig () {
       const jumpBearer = 'http://weixin.bingyan-tech.hustonline.net/devupick/jump.html'
       const imgUrl = 'http://weixin.bingyan-tech.hustonline.net/devupick/static/img/title-share.png'
       let wechatShareConfig
+      if (this.$route.path === '/') {
+        wechatShareConfig = {
+          title: `华科优铺 | 让校内坑店无处遁形！`, // 分享标题
+          desc: '发现校内优质店铺，\n吐槽校内黑心商家，\n让品质校园生活从华科优铺开始！',
+          link: `${jumpBearer}?to=${encodeURIComponent(window.location.href)}`, // 分享链接
+          imgUrl
+        }
+        return
+      }
       const matched = this.$route.matched[this.$route.matched.length - 1]
       switch (matched.path) {
         case '/list/:type/:subtype':
@@ -57,8 +71,8 @@ export default {
           const shopName = this.$route.params.name
           const shop = await getShopByName(shopName)
           wechatShareConfig = {
-            title: `“${shopName}”的详情信息 | 华科优铺`, // 分享标题
-            desc: `营业时间为${shop.openTime}，位于${shop.shopAddress}，评分${shop.shopScore}分。`,
+            title: `“${shopName}”等你来评 | 华科优铺`, // 分享标题
+            desc: `营业时间为${shop.openTime}，位于${shop.shopAddress}，评分${parseInt(shop.shopScore)}分。`,
             link: `${jumpBearer}?to=${encodeURIComponent(window.location.href)}`, // 分享链接
             imgUrl: shop.imgs[0].msrc.indexOf('hustonline.net') >= 0
                       ? shop.imgs[0].msrc
