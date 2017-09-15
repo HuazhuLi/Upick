@@ -1,119 +1,135 @@
 <template>
-  <router-view></router-view>
+  <div id="app" ref="root">
+    <transition :name="transitionName">
+        <router-view></router-view>
+    </transition>
+  </div>
 </template>
+
 <script>
-import axios from 'axios'
-module.exports = {
+import wx from 'weixin-js-sdk'
+import { wechatConfig, getShopByName } from './service'
+export default {
   name: 'app',
-  components: {},
-  mounted () {
-    this.$router.beforeEach((to, from, next) => {
-      axios.post('pages_info', {
-        'current_page': from.path,
-        'previous_page': to.path
-      }, {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
+  data () {
+    return {
+      transitionName: 'slide-right'
+    }
+  },
+  async mounted () {
+    this.$nextTick(() => {
+      this.$refs.root.style.height = window.innerHeight + 'px'
+    })
+    this.initConfig()
+  },
+  methods: {
+    async makeConfig () {
+      const jumpBearer = 'http://weixin.bingyan-tech.hustonline.net/devupick/jump.html'
+      const imgUrl = 'http://weixin.bingyan-tech.hustonline.net/devupick/static/img/title-share.png'
+      let wechatShareConfig
+      const matched = this.$route.matched[this.$route.matched.length - 1]
+      switch (matched.path) {
+        case '/list/:type/:subtype':
+          wechatShareConfig = {
+            title: `校内所有“${this.$route.params.subtype}”相关的商家都在这里啦！| 华科优铺`, // 分享标题
+            desc: '还不快快点进来看看！',
+            link: `${jumpBearer}?to=${encodeURIComponent(window.location.href)}`, // 分享链接
+            imgUrl
+          }
+          break
+        case '/':
+          wechatShareConfig = {
+            title: `华科优铺 | 让校内坑店无处遁形！`, // 分享标题
+            desc: '发现校内优质店铺，\n吐槽校内黑心商家，\n让品质校园生活从华科优铺开始！',
+            link: `${jumpBearer}?to=${encodeURIComponent(window.location.href)}`, // 分享链接
+            imgUrl
+          }
+          break
+        case '/search/:keyword':
+          wechatShareConfig = {
+            title: `校内所有“${this.$route.params.keyword}”相关的商家都在这里啦！| 华科优铺`, // 分享标题
+            desc: '还不快快点进来看看！',
+            link: `${jumpBearer}?to=${encodeURIComponent(window.location.href)}`, // 分享链接
+            imgUrl
+          }
+          break
+        case '/detail/:name':
+          const shopName = this.$route.params.name
+          const shop = await getShopByName(shopName)
+          wechatShareConfig = {
+            title: `“${shopName}”的详情信息 | 华科优铺`, // 分享标题
+            desc: `营业时间为${shop.openTime}，位于${shop.shopAddress}，评分${shop.shopScore}分。`,
+            link: `${jumpBearer}?to=${encodeURIComponent(window.location.href)}`, // 分享链接
+            imgUrl: window.location.href.split('#')[0] + shop.imgs[0].msrc
+          }
+          break
+        case '/comment/:name':
+          wechatShareConfig = {
+            title: `华科优铺邀请你为“${this.$route.params.name}”评价`, // 分享标题
+            desc: `发现校内优质店铺，\n吐槽校内黑心商家，\n让品质校园生活从华科优铺开始！`,
+            link: `${jumpBearer}?to=${encodeURIComponent(window.location.href)}`, // 分享链接
+            imgUrl
+          }
+          break
+      }
+      wx.onMenuShareTimeline(wechatShareConfig)
+      wx.onMenuShareAppMessage(wechatShareConfig)
+      wx.onMenuShareQQ(wechatShareConfig)
+      wx.onMenuShareWeibo(wechatShareConfig)
+      wx.onMenuShareQZone(wechatShareConfig)
+    },
+    async initConfig () {
+      const response = await wechatConfig()
+      wx.config({
+        debug: false,
+        appId: response.appId,
+        timestamp: response.timestamp,
+        nonceStr: response.nonceStr,
+        signature: response.signature,
+        jsApiList: [
+          'onMenuShareTimeline',
+          'onMenuShareAppMessage',
+          'onMenuShareQQ',
+          'onMenuShareWeibo',
+          'onMenuShareQZone',
+          'previewImage'
+        ],
+        success: function () {
+          // 用户确认分享后执行的回调函数
         },
-        transformRequest: [function (data) {
-          return Object.keys(data).map((key) => {
-            return 'key' + '=' + data[key];
-          }).join('&');
-        }]
-      }).then(() => {
-        next();
-      });
-    });
+        cancel: function () {
+          // 用户取消分享后执行的回调函数
+        }
+      })
+      wx.ready(() => {
+        this.makeConfig()
+      })
+      wx.error(function (res) {
+        console.error('微信认证失败')
+        throw new Error(res)
+      })
+//      window.addEventListener('hashchange', () => this.makeConfig())
+    }
+  },
+  watch: {
+    '$route' (to, from) {
+      const toDepth = to.path.split('/').filter(t => t !== '').length
+      const fromDepth = from.path.split('/').filter(t => t !== '').length
+      this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
+      this.makeConfig()
+    }
   }
-};
+}
 </script>
 
-<style>
-#app{
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<style lang="stylus">
+.slide-right-enter {
+  transform translateX(-100%)
 }
-body,
-html{
-  margin:0;
-  padding:0;
-  height:100%;
+.slide-right-enter-active, .slide-left-enter-active {
+  transition transform 0.3s
 }
-@media only screen and (max-width:1080px), only screen and (max-device-width:1080px) {
-  html,body {
-    font-size:54px;
-  }
-}
-@media only screen and (max-width: 960px), only screen and (max-device-width: 960px) {
-  html,body {
-    font-size:48px;
-  }
-}
-@media only screen and (max-width: 800px), only screen and (max-device-width: 800px) {
-  html,body {
-    font-size:40px;
-  }
-}
-@media only screen and (max-width: 720px), only screen and (max-device-width: 720px) {
-  html,body {
-    font-size:36px;
-  }
-}
-@media only screen and (max-width: 640px), only screen and (max-device-width: 640px) {
-  html,body {
-    font-size:32px;
-  }
-}
-@media only screen and (max-width: 600px), only screen and (max-device-width: 600px) {
-  html,body {
-    font-size:30px;
-  }
-}
-@media only screen and (max-width: 480px), only screen and (max-device-width: 480px) {
-  html,body {
-    font-size:24px;
-  }
-}
-@media only screen and (max-width: 414px), only screen and (max-device-width: 414px) {
-  html,body {
-    font-size:20.7px;
-  }
-}
-@media only screen and (max-width: 400px), only screen and (max-device-width: 400px) {
-  html,body {
-    font-size:20px;
-  }
-}
-@media only screen and (max-width: 375px), only screen and (max-device-width: 375px) {
-  html,body {
-    font-size:18.75px;
-  }
-}
-@media only screen and (max-width: 360px), only screen and (max-device-width: 360px) {
-  html,body {
-    font-size:18px;
-  }
-}
-@media only screen and (max-width: 320px), only screen and (max-device-width: 320px) {
-  html,body {
-    font-size:16px;
-  }
-}
-@media only screen and (max-width: 240px), only screen and (max-device-width: 240px) {
-  html,body {
-    font-size:12px;
-  }
-}
-*{
-  -webkit-text-size-adjust: none;
-}
-*{
-  -webkit-tap-highlight-color:rgba(0,0,0,0);
-}
-*{
-  outline: none;
+.slide-left-enter {
+  transform translateX(100%)
 }
 </style>

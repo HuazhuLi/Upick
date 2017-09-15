@@ -1,57 +1,20 @@
-// The Vue build version to load with the `var` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-var Vue = require('vue');
-var VueRouter = require('vue-router');
-var VuePreview = require('vue-preview');
+import './plugins/zhugeio'
+const consoleLogStyle = `
+line-height: 50px;
+height: 50px;
+display: inline-block;
+background: #fe921f;
+color: #FFFFFF;
+padding: 20px 20px 16px 20px;
+`
 
-// import VueRouter from 'vue-router'
-// import VuePreview from 'vue-preview'
+console.log(`%c    Upick!   `, consoleLogStyle + 'font-size:32px;')
+console.log(`%cPowered By Bingyan Studio`, consoleLogStyle + 'font-size:16px;padding-right:23px;');
 
-var App = require('./App.vue');
-var newStore = require('./components/newStore.vue');
-var mainPage = require('./components/mainPage.vue');
-var addSuccess = require('./components/addSuccess.vue');
-var noStore = require('./components/noStore.vue');
-var storeList = require('./components/storeList.vue');
-var storeDetail = require('./components/storeDetail.vue');
-var comment = require('./components/comment.vue');
-var mark = require('./components/mark.vue');
-var commentSuccess = require('./components/commentSuccess.vue');
-var commentFailed = require('./components/commentFailed.vue');
-import VIscroll from 'viscroll';
-
-Vue.use(VIscroll, {
-  mouseWheel: true,
-  click: true,
-  preventDefault: true,
-  tap: true,
-  bounce: true,
-  disableTouch: false,
-  freeScroll: true
-});
-Vue.use(VueRouter);
-Vue.use(VuePreview.default);
-var routes = [
-  { path: '/', component: mainPage },
-  { path: '/storeDetail/:id', component: storeDetail },
-  { path: '/storeList/:type', component: storeList },
-  { path: '/storeList/search/noStore', component: noStore},
-  { path: '/storeList/search/:keyword', component: storeList },
-  { path: '/newStore', component: newStore },
-  { path: '/newStore/addSuccess', component: addSuccess},
-  { path: '/comment/success/:id', component: commentSuccess},
-  { path: '/comment/failed/:id', component: commentFailed},
-  { path: '/comment/mark/:id/:title/:tags/:comment/:images', component: mark},
-  { path: '/comment/:id', component: comment},
-  { path: '/:type', component: mainPage }
-];
-
-var router = new VueRouter({
-  routes: routes
-});
-new Vue({
-  el: '#app',
-  template: '<App/>',
-  components: { App: App },
-  router: router
-});
+(async function () {
+  /**
+   * Async-loading of this App, will be
+   * bundled to a chunk named 0.js, 500kb
+   */
+  await import('./App.js')
+})()
