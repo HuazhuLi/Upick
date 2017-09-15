@@ -83,7 +83,7 @@ export default {
   async mounted () {
     window.closeLoading()
     await wait(400)
-    document.title = '评价'
+    document.title = '评价店铺'
     this.$nextTick(() => {
       this.rem = this.$refs.line.clientHeight
       this.lineWidth = this.$refs.line.clientWidth - this.$refs.block.clientWidth

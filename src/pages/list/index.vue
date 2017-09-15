@@ -35,6 +35,7 @@ export default {
     }
   },
   async mounted () {
+    document.title = '店铺列表'
     try {
       let typeData = await getShopsByType(this.$route.params.type)
       /*

@@ -27,7 +27,7 @@
       </div>
     </div>
     <div class="images" :style="{'height': shrink ? 0 : ''}">
-      <img :src="img.src" v-for="(img, i) in imgURLs" @click="previewImage(imgURLs, i)">
+      <img :src="img.src" v-for="(img, i) in imgURLs.slice(0, 3)" @click="previewImage(imgURLs, i)">
     </div>
     <div class="tags" :style="{'height': shrink ? 0 : ''}">
       <ul v-if="tags && tags.length > 0">
@@ -60,8 +60,7 @@
                   {{(new Date(comment.issueTime)).toLocaleDateString()}}
                 </span>
               </div>
-              <div class="like" @click="updateOperation(comment, 0)"
-              >
+              <div class="like" @click="updateOperation(comment, 0)">
                 <span class="icon like" :class="{ 'liked': getOperationValue(comment, 0) === 1 }"></span>
                 <span class="value">{{comment.likeNumber + getOperationValue(comment, 0)}}</span>
               </div>
@@ -131,8 +130,15 @@ export default {
     this.imgURLs = detail.imgs
     this.tags = detail.shopTags
     this.comments = (await getComments(this.$route.params.name)).commentList
-    console.log(this.comments)
     this.sortByDate(this.comments)
+    this.comments.forEach((comment) => {
+      if (comment.liked) {
+        this.updateOperation(comment, 0)
+      }
+      if (comment.disliked) {
+        this.updateOperation(comment, 1)
+      }
+    })
   },
   methods: {
     sortByDate (array) {
@@ -162,9 +168,9 @@ export default {
       } else {
         comment.operation = operation
         if (operation === 0) {
-          likeComment(comment.authorOpenid, comment.issueTime)
+          comment.liked || likeComment(comment.authorOpenid, comment.issueTime)
         } else {
-          dislikeComment(comment.authorOpenid, comment.issueTime)
+          comment.disliked || dislikeComment(comment.authorOpenid, comment.issueTime)
         }
         // submit
       }
@@ -178,10 +184,12 @@ export default {
       }
     },
     previewImage (imgs, i) {
-      const urls = imgs.map(img => window.location.href.split('#')[0] + img.src)
+//      const urls = imgs.map(img => window.location.href.split('#')[0] + img.src)
       wx.previewImage({
-        current: urls[i], // 当前显示图片的http链接
-        urls // 需要预览的图片http链接列表
+        current: 'http://weixin.bingyan-tech.hustonline.net/devupick/shop_images/shop-bfe1b886-10a3-11e7-8fe3-525400b76a89.jpeg', // 当前显示图片的http链接
+        urls: [
+          'http://weixin.bingyan-tech.hustonline.net/devupick/shop_images/shop-bfe1b886-10a3-11e7-8fe3-525400b76a89.jpeg'
+        ] // 需要预览的图片http链接列表
       })
     }
   },
