@@ -60,7 +60,9 @@ export default {
             title: `“${shopName}”的详情信息 | 华科优铺`, // 分享标题
             desc: `营业时间为${shop.openTime}，位于${shop.shopAddress}，评分${shop.shopScore}分。`,
             link: `${jumpBearer}?to=${encodeURIComponent(window.location.href)}`, // 分享链接
-            imgUrl: window.location.href.split('#')[0] + shop.imgs[0].msrc
+            imgUrl: shop.imgs[0].msrc.indexOf('hustonline.net') >= 0
+                      ? shop.imgs[0].msrc
+                      : window.location.href.split('#')[0] + shop.imgs[0].msrc
           }
           break
         case '/comment/:name':

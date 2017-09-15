@@ -184,12 +184,16 @@ export default {
       }
     },
     previewImage (imgs, i) {
-//      const urls = imgs.map(img => window.location.href.split('#')[0] + img.src)
+      const urls = imgs.map(img => {
+        if (img.src.indexOf('hustonline.net') >= 0) {
+          return img.src
+        } else {
+          return window.location.href.split('#')[0] + img.src
+        }
+      })
       wx.previewImage({
-        current: 'http://weixin.bingyan-tech.hustonline.net/devupick/shop_images/shop-bfe1b886-10a3-11e7-8fe3-525400b76a89.jpeg', // 当前显示图片的http链接
-        urls: [
-          'http://weixin.bingyan-tech.hustonline.net/devupick/shop_images/shop-bfe1b886-10a3-11e7-8fe3-525400b76a89.jpeg'
-        ] // 需要预览的图片http链接列表
+        current: urls[i],
+        urls // 需要预览的图片http链接列表
       })
     }
   },
