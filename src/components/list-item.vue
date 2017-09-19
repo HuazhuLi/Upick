@@ -59,7 +59,9 @@ export default {
   },
   computed: {
     scoreText () {
-      return Number.prototype.toPrecision.call(this.score, 2) + '分'
+      return this.score === 0
+        ? '暂无评分'
+        : Number.prototype.toPrecision.call(this.score, 2) + '分'
     }
   },
   watch: {
@@ -120,7 +122,8 @@ a {
       .score-right {
         flex-shrink 0
         color #FF841B
-        width 2.4rem
+        font-size 0.8rem
+        text-align right
       }
     }
     .tags-list {

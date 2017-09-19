@@ -87,7 +87,7 @@ export default {
     this.$nextTick(() => {
       this.rem = this.$refs.line.clientHeight
       this.lineWidth = this.$refs.line.clientWidth - this.$refs.block.clientWidth
-      this.offset = this.lineWidth / 2
+      this.offset = this.lineWidth * 0.7
     })
     this.allTags = (await getAllTags(this.$route.params.name)).shopTags
     this.$nextTick(() => {

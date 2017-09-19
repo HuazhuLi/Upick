@@ -79,6 +79,9 @@
             </div>
           </div>
         </li>
+        <li v-if="comments.length === 0" class="no-comment">
+          <span>尴尬，暂时没有评论...</span>
+        </li>
       </ul>
     </div>
     <button class="float-button"
@@ -407,6 +410,12 @@ export default {
       &:last-child {
         margin-bottom 4rem
       }
+    }
+    li.no-comment {
+      color #717171
+      padding 0.5rem
+      font-size 0.7rem
+      text-align center
     }
   }
 }
