@@ -446,22 +446,22 @@ export default {
     }
     .icon {
       display inline-block
-      height 1.2rem
-      width 1.08rem
+      height 22px
+      width 20px
       background-size auto 100%
       background-image url('./icons.png')
       background-repeat no-repeat
       &.like {
-        background-position ((-4) * 1.0948 + 0.05)rem
+        background-position -79px
       }
       &.dislike {
-        background-position ((-6) * 1.0948 + 0.05)rem
+        background-position -120px
       }
       &.liked {
-        background-position ((-3) * 1.0948)rem
+        background-position -99px
       }
       &.disliked {
-        background-position ((-5) * 1.0948 + 0.05)rem
+        background-position -59px
       }
     }
     .value {
