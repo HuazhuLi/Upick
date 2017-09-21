@@ -458,10 +458,10 @@ export default {
         background-position -120px
       }
       &.liked {
-        background-position -99px
+        background-position -59px
       }
       &.disliked {
-        background-position -59px
+        background-position -99px
       }
     }
     .value {
