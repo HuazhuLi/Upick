@@ -447,7 +447,7 @@ export default {
     .icon {
       display inline-block
       height 22px
-      width 21px
+      width 20px
       background-size auto 100%
       background-image url('./icons.png')
       background-repeat no-repeat
