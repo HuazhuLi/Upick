@@ -184,7 +184,7 @@ export default {
       }
     },
     previewImage (imgs, i) {
-//      const urls = imgs.map(img => window.location.href.split('#')[0] + img.src)
+      // const urls = imgs.map(img => window.location.href.split('#')[0] + img.src)
       wx.previewImage({
         current: 'http://weixin.bingyan-tech.hustonline.net/devupick/shop_images/shop-bfe1b886-10a3-11e7-8fe3-525400b76a89.jpeg', // 当前显示图片的http链接
         urls: [
@@ -433,22 +433,22 @@ export default {
     }
     .icon {
       display inline-block
-      height 1.2rem
-      width 1.08rem
+      height 22px
+      width 20px
       background-size auto 100%
       background-image url('./icons.png')
       background-repeat no-repeat
       &.like {
-        background-position ((-4) * 1.0948 + 0.05)rem
+        background-position -79px
       }
       &.dislike {
-        background-position ((-6) * 1.0948 + 0.05)rem
+        background-position -120px
       }
       &.liked {
-        background-position ((-3) * 1.0948)rem
+        background-position -59px
       }
       &.disliked {
-        background-position ((-5) * 1.0948 + 0.05)rem
+        background-position -99px
       }
     }
     .value {
