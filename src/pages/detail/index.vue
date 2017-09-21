@@ -447,7 +447,7 @@ export default {
     .icon {
       display inline-block
       height 22px
-      width 20px
+      width 21px
       background-size auto 100%
       background-image url('./icons.png')
       background-repeat no-repeat
@@ -461,7 +461,7 @@ export default {
         background-position -59px
       }
       &.disliked {
-        background-position -99px
+        background-position -100px
       }
     }
     .value {
