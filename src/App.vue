@@ -24,7 +24,7 @@ export default {
     this.makeConfig()
     if ((await checkLoginStatus()) === false && process.env.NODE_ENV !== 'development') {
       window.title = '需要登录！'
-      // window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx70014cb42f7c9422&redirect_uri=http%3A//weixin.bingyan-tech.hustonline.net/devupick/api/v2/weixin/access&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect'
+      window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx70014cb42f7c9422&redirect_uri=http%3A//weixin.bingyan-tech.hustonline.net/devupick/api/v2/weixin/access&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect'
     }
   },
   methods: {
@@ -41,7 +41,6 @@ export default {
         }
       }
       const matched = this.$route.matched[this.$route.matched.length - 1]
-      console.log(matched)
       switch (matched.path) {
         case '/list/:type/:subtype':
           wechatShareConfig = {
