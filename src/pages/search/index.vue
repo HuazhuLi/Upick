@@ -5,7 +5,6 @@
              ref="input" v-model="keyword"
              @keyup.enter="$router.replace(`/search/${keyword}`)"
              @focus="showPreview = true"
-             @click="consoleLogPreviews()"
       />
       <button :disabled="!keyword"
               @click="$router.replace(`/search/${keyword}`),showPreview = false"
@@ -25,7 +24,7 @@
         </ul>
       </div>
     </div>
-    <div class="preview" v-else-if="showPreview">
+    <div class="preview" v-else-if="!$route.params.keyword">
       <ul>
         <li v-for="preview in previews" @click="$router.push(`/search/${preview.shopName}`),showPreview = false">
           <img class="search-icon" src="./search.png">
