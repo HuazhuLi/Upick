@@ -494,6 +494,7 @@ export default {
         img {
           height $width
           width $width
+          border-radius 0.3rem
         }
       }
     }
