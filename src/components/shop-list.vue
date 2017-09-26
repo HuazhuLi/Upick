@@ -66,7 +66,7 @@ export default {
       this.loadShops()
       this.$nextTick(() => {
         this.initialHeight = this.$refs.root.clientHeight + 'px'
-        this.$refs.swiper.options.onSlideChangeEnd = this.onSlideChangeEnd
+        this.$refs.swiper.options.onSlideChangeEnd = this.onSlideChangeEnd.bind(this)
       })
     }, 100)
   },
@@ -105,6 +105,7 @@ export default {
       /**
        * 换页事件
        */
+      console.log(this)
       window.requestAnimationFrame(() => {
         this.$emit('pageChange', index)
       })
