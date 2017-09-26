@@ -4,9 +4,11 @@
       <input placeholder="请输入搜索内容"
              ref="input" v-model="keyword"
              @keyup.enter="$router.replace(`/search/${keyword}`)"
+             @focus="showPreview = true"
+             @click="consoleLogPreviews()"
       />
       <button :disabled="!keyword"
-              @click="$router.replace(`/search/${keyword}`)"
+              @click="$router.replace(`/search/${keyword}`),showPreview = false"
       >搜索</button>
     </div>
     <div v-if="keyword === '' && !$route.params.keyword" class="hot-history">
@@ -23,12 +25,12 @@
         </ul>
       </div>
     </div>
-    <div class="preview" v-else-if="!$route.params.keyword">
+    <div class="preview" v-else-if="showPreview">
       <ul>
-        <li v-for="preview in previews" @click="$router.push(`/search/${keyword}`)">
+        <li v-for="preview in previews" @click="$router.push(`/search/${preview.shopName}`),showPreview = false">
           <img class="search-icon" src="./search.png">
           <span>{{preview.shopName}}</span>
-          <span>{{preview.shopScore.toPrecision(2) + '分'}}</span>
+          <span>{{(!preview.shopScore ? '暂无评' : preview.shopScore.toPrecision(2)) + '分'}}</span>
         </li>
       </ul>
     </div>
@@ -63,24 +65,20 @@ export default {
       hot: [],
       history: [],
       showShopList: true,
-      keywords: []
+      keywords: [],
+      showPreview: false
     }
   },
-//  computed: {
-//    keywords () {
-//      console.log('aa')
-//      return [ this.$route.params.keyword ]
-//    }
-//  },
   watch: {
     keyword () {
+      clearTimeout(this.refreshTimeout)
+      this.refreshTimeout = setTimeout(async () => {
+        if (this.keyword) {
+          this.previews = (await getShopsByPrefix(this.keyword)).shopList
+        }
+      }, 500)
       if (!this.$route.params.keyword) {
-        clearTimeout(this.refreshTimeout)
-        this.refreshTimeout = setTimeout(async () => {
-          if (this.keyword) {
-            this.previews = (await getShopsByPrefix(this.keyword)).shopList
-          }
-        }, 500)
+
       } else {
         if (!this.showShopList) {
           this.showShopList = true
@@ -110,6 +108,9 @@ export default {
   methods: {
     catchNoShopError (n) {
       this.showShopList = n > 0
+    },
+    consoleLogPreviews () {
+      console.log(this.previews)
     }
   }
 }

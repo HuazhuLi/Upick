@@ -59,7 +59,7 @@ export default {
   },
   computed: {
     scoreText () {
-      return this.score === 0
+      return this.score === 0 || !this.score
         ? '暂无评分'
         : Number.prototype.toPrecision.call(this.score, 2) + '分'
     }

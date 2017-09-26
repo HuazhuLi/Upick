@@ -138,10 +138,11 @@ export async function searchShops (keyword) {
  * @returns {Promise.<Object>}
  */
 export async function getShopsByPrefix (prefix) {
-  return await http.post(`${root}/shops/list`, {
-    'request_type': 4,
-    'prefix': prefix
-  }, {
+  return await http.get(`${root}/shops/list`, {
+    params: {
+      'request_type': 4,
+      'prefix': prefix
+    },
     headers: {
       'content-type': 'application/json'
     }
