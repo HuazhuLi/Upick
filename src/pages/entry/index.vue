@@ -11,7 +11,7 @@
       <img class="bg-wave" src="./wave.png"/>
       <h1 class="title" @click="$tip.open('暂未开发！')"> Upick </h1>
       <div class="search-icon">
-        <router-link to="/search"><span class="icon"></span></router-link>
+        <router-link @click="_czc.push(['_trackEvent', '主页', '搜索', '点击'])" to="/search" ><span class="icon"></span></router-link>
       </div>
     </div>
     <div class="classify" ref="typeRoot">
@@ -30,7 +30,7 @@
                v-for="index in line.length * 2 - 1"
                :style="{'height': typeLineHeight + 'px'}"
           >
-            <router-link v-if="index % 2 === 1" :to="`/list/${line[(index - 1) / 2]}/`">
+            <router-link v-if="index % 2 === 1" :to="`/list/${line[(index - 1) / 2]}/`" @click="_czc.push(['_trackEvent', '主页', '大类', line[(index - 1) / 2]])">
               <div class="type-img" ref="typeImages"></div>
               <h4>{{line[(index - 1) / 2]}}</h4>
             </router-link>
@@ -47,7 +47,7 @@
       </h2>
       <ul>
         <li v-for="hotShop in hotShops.slice(0,6)">
-          <router-link :to="`/detail/${hotShop.shopName}`" class="shop" >{{hotShop.shopName}}</router-link>
+          <router-link :to="`/detail/${hotShop.shopName}`" class="shop" @click="_czc.push(['_trackEvent', '主页', '热门', hotShop.shopName])">{{hotShop.shopName}}</router-link>
         </li>
       </ul>
     </div>
@@ -61,7 +61,8 @@ export default {
       slogan: '品质校园生活从华科优铺开始！',
       hotShops: [],
       shopTypes: [],
-      typeLineHeight: 0
+      typeLineHeight: 0,
+      _czc
     }
   },
   async mounted () {

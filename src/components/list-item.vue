@@ -1,6 +1,6 @@
 <template>
   <li class="list-item" ref="li">
-    <router-link :to="`/detail/${shopName}`">
+    <router-link :to="`/detail/${shopName}`" @click="_czc.push(['_trackEvent', '店铺项目', '点击', shopName])">
       <div class="image">
         <img v-if="needToLoadImage" :src="iconSrc" @load="imageLoaded = true" :key="iconSrc"/>
       </div>
@@ -26,7 +26,8 @@ export default {
     return {
       displaySrc: '',
       imageLoaded: false,
-      needToLoadImage: false
+      needToLoadImage: false,
+      _czc
     }
   },
   props: {

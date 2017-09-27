@@ -1,7 +1,7 @@
 <template>
   <div class="list">
     <div class="top-bar">
-      <router-link to="/search"></router-link>
+      <router-link to="/search" @click="_console('');_czc.push(['_trackEvent', '列表页', '搜索', '点击'])"></router-link>
       <div class="subtype-selector">
         <div class="wrapper">
           <div v-for="subtypeName in subtypes"
@@ -31,7 +31,8 @@ export default {
   data () {
     return {
       subtypes: [],
-      shops: []
+      shops: [],
+      _czc
     }
   },
   async mounted () {
@@ -61,6 +62,9 @@ export default {
     handlePageChange (index) {
       this.$refs.subtypeSelectors[index].scrollIntoView()
       this.$refs.subtypeSelectors[index].click()
+    },
+    _console (v) {
+      console.log(v)
     }
   }
 }
