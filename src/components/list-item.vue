@@ -1,6 +1,6 @@
 <template>
   <li class="list-item" ref="li">
-    <router-link :to="`/detail/${shopName}`" @click="_czc.push(['_trackEvent', '店铺项目', '点击', shopName])">
+    <a @click="$router.push(`/detail/${shopName}`);_czc.push(['_trackEvent', '店铺项目', '点击', shopName])">
       <div class="image">
         <img v-if="needToLoadImage" :src="iconSrc" @load="imageLoaded = true" :key="iconSrc"/>
       </div>
@@ -17,7 +17,7 @@
           </li>
         </ul>
       </div>
-    </router-link>
+    </a>
   </li>
 </template>
 <script>
@@ -27,7 +27,7 @@ export default {
       displaySrc: '',
       imageLoaded: false,
       needToLoadImage: false,
-      _czc
+      _czc: null
     }
   },
   props: {
@@ -35,6 +35,9 @@ export default {
     shopName: String,
     score: Number,
     tags: Array
+  },
+  mounted () {
+    this._czc = window._czc
   },
   methods: {
     checkLazyLoad () {

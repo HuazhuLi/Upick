@@ -11,7 +11,9 @@
       <img class="bg-wave" src="./wave.png"/>
       <h1 class="title" @click="$tip.open('暂未开发！')"> Upick </h1>
       <div class="search-icon">
-        <router-link @click="_czc.push(['_trackEvent', '主页', '搜索', '点击'])" to="/search" ><span class="icon"></span></router-link>
+        <a @click="$router.push('/search');_czc.push(['_trackEvent', '主页', '搜索', '点击'])" >
+          <span class="icon"></span>
+        </a>
       </div>
     </div>
     <div class="classify" ref="typeRoot">
@@ -30,10 +32,10 @@
                v-for="index in line.length * 2 - 1"
                :style="{'height': typeLineHeight + 'px'}"
           >
-            <router-link v-if="index % 2 === 1" :to="`/list/${line[(index - 1) / 2]}/`" @click="_czc.push(['_trackEvent', '主页', '大类', line[(index - 1) / 2]])">
+            <a v-if="index % 2 === 1" @click="$router.push(`/list/${line[(index - 1) / 2]}/`);_czc.push(['_trackEvent', '主页', '大类', line[(index - 1) / 2]])">
               <div class="type-img" ref="typeImages"></div>
               <h4>{{line[(index - 1) / 2]}}</h4>
-            </router-link>
+            </a>
             <div class="divider" v-else></div>
           </div>
         </div>
@@ -47,7 +49,7 @@
       </h2>
       <ul>
         <li v-for="hotShop in hotShops.slice(0,6)">
-          <router-link :to="`/detail/${hotShop.shopName}`" class="shop" @click="_czc.push(['_trackEvent', '主页', '热门', hotShop.shopName])">{{hotShop.shopName}}</router-link>
+          <a class="shop" @click="$router.push(`/detail/${hotShop.shopName}`);_czc.push(['_trackEvent', '主页', '热门', hotShop.shopName])">{{hotShop.shopName}}</a>
         </li>
       </ul>
     </div>
@@ -62,10 +64,11 @@ export default {
       hotShops: [],
       shopTypes: [],
       typeLineHeight: 0,
-      _czc
+      _czc: null
     }
   },
   async mounted () {
+    this._czc = window._czc
     try {
       // 加载信息
       let { slogan, shopTypes, popularShops } = await getIndex()

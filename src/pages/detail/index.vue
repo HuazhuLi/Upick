@@ -85,7 +85,7 @@
       </ul>
     </div>
     <button class="float-button"
-            @click="$router.push(`/comment/${$route.params.name}`)"
+            @click="$router.push(`/comment/${$route.params.name}`);_czc.push(['_trackEvent', '详情页', '评论', '点击'])"
     ></button>
   </div>
 </template>
@@ -113,10 +113,12 @@ export default {
       tags: [],
       comments: [],
       currentType: 0,
-      shrink: false
+      shrink: false,
+      _czc: null
     }
   },
   async mounted () {
+    this._czc = window._czc
     await wait(400)
     const images = Array.from(document.querySelectorAll('.img-to-load > img'))
     const imagesLoadPromise = images.map((image) => {

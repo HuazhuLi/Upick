@@ -1,21 +1,21 @@
 <template>
   <div class="list">
     <div class="top-bar">
-      <router-link to="/search" @click="_console('');_czc.push(['_trackEvent', '列表页', '搜索', '点击'])"></router-link>
+      <a @click="$router.push('/search');_czc.push(['_trackEvent', '列表页', '搜索', '点击'])"></a>
       <div class="subtype-selector">
         <div class="wrapper">
           <div v-for="subtypeName in subtypes"
                class="subtype"
                ref="subtypeSelectors"
                :class="{ 'active': $route.params.subtype === subtypeName }"
-               @click="$router.replace(subtypeName)">
+               @click="$router.replace(subtypeName);_czc.push(['_trackEvent', '列表页', '顶栏', subtypeName, '点击'])">
             {{subtypeName}}
           </div>
         </div>
       </div>
     </div>
     <router-view :shops="shops" :subtype="subtypes" @pageChange="handlePageChange($event)"></router-view>
-    <button class="float-button" @click="$router.push('/add')">
+    <button class="float-button" @click="$router.push('/add');_czc.push(['_trackEvent', '列表页', '添加新店', '点击'])">
       <span class="vertical-line"></span>
       <span class="horizontal-line"></span>
     </button>
@@ -32,10 +32,11 @@ export default {
     return {
       subtypes: [],
       shops: [],
-      _czc
+      _czc: null
     }
   },
   async mounted () {
+    this._czc = window._czc
     document.title = '店铺列表'
     try {
       let typeData = await getShopsByType(this.$route.params.type)
