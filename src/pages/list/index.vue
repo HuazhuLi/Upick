@@ -61,11 +61,11 @@ export default {
   },
   methods: {
     handlePageChange (index) {
-      this.$refs.subtypeSelectors[index].scrollIntoView()
+      try {
+        this.$refs.subtypeSelectors[index + 1].scrollIntoView()
+      } catch (e) {
+      }
       this.$refs.subtypeSelectors[index].click()
-    },
-    _console (v) {
-      console.log(v)
     }
   }
 }

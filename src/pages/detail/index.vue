@@ -7,7 +7,10 @@
     <div class="title">
       <h1>
         <span>{{$route.params.name}}</span>
-        <span class="mark">{{shopScore.toFixed(1) + '分'}}</span>
+        <span class="mark">{{shopScore === 0 || !shopScore
+          ? '暂无评分'
+          : Number.prototype.toPrecision.call(shopScore, 2) + '分'}}</span>
+        <span class="return-to-home" @click="$router.push('/')">首页→</span>
       </h1>
     </div>
     <div class="time-location">
@@ -148,12 +151,12 @@ export default {
   methods: {
     sortByDate (array) {
       array = array.sort((a, b) => {
-        return a.issueTime < b.issueTime
+        return a.issueTime - b.issueTime
       })
     },
     sortByHot (array) {
       array = array.sort((a, b) => {
-        return a.likeNumber < b.likeNumber
+        return a.likeNumber - b.likeNumber
       })
     },
     checkScroll (e) {
@@ -225,7 +228,7 @@ export default {
 }
 .title {
   flex-shrink 0
-  padding 1rem 1.5rem
+  padding 1rem .5rem 1rem 1.5rem
   h1 {
     margin 0
     font-size 1rem
@@ -243,9 +246,18 @@ export default {
       color #ffac00
       flex-shrink 0
       display inline
+      flex-grow 1
       /**
        * 太 Dirty 了！！！！，用scale强行baseline一波
        */
+      transform scale((24/28))
+      transform-origin 50% 100%
+    }
+    .return-to-home {
+      flex-shrink 0
+      font-size 1rem
+      right: 1rem
+      color #ffac00
       transform scale((24/28))
       transform-origin 50% 100%
     }

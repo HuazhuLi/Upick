@@ -6,6 +6,7 @@ import store from '../store'
 const root = 'api/v2'
 
 const shopsByType = []
+const shopsPatch = []
 
 const objectToCamel = (obj) => {
   function type () {
@@ -83,7 +84,14 @@ export async function getShopsBySubtype (subtype) {
   }
   */
   return {
-    shopList: shopsByType.filter(shop => shop.subtype === subtype)
+    shopList: shopsByType.filter(shop => shop.subtype === subtype).map(shop => {
+      const res = shopsPatch.filter(localShop => localShop.shopName === shop.shopName)
+      if (res.length > 0) {
+        return res[res.length - 1]
+      } else {
+        return shop
+      }
+    })
   }
 }
 // 根据大类获取
@@ -92,7 +100,7 @@ export async function getShopsByType (type) {
     return res.requestType === 1 && res.shopType === type
   })
   if (query.length > 0) {
-    return query[0].res
+    return query[query.length - 1].res
   }
   let res
   try {
@@ -105,8 +113,14 @@ export async function getShopsByType (type) {
         'content-type': 'application/json'
       }
     }).then(objectToCamel)
-    console.log(res)
-    shopsByType.unshift(...res.shopList)
+    shopsByType.unshift(...res.shopList.map(shop => {
+      const res = shopsPatch.filter(localShop => localShop.shopName === shop.shopName)
+      if (res.length > 0) {
+        return res[res.length - 1]
+      } else {
+        return shop
+      }
+    }))
     store.state.cachedRequest.push({
       requestType: 1,
       shopType: type,
@@ -170,7 +184,7 @@ export async function getShopByName (name) {
   if (shop.length <= 0) {
     return await http.get(`${root}/shops?shop_name=${name}`).then(objectToCamel)
   } else {
-    return shop[0]
+    return shop[shop.length - 1]
   }
 }
 
@@ -208,7 +222,7 @@ export async function uploadImage (imageBase64String) {
  * @returns {Promise<Object>}
  */
 export async function addComment (shopName, shopScore, commentText, shopTags, imagesURL) {
-  return await http.post(`${root}/comments`, {
+  const temp = await http.post(`${root}/comments`, {
     'request_type': 1,
     'shop_name': shopName,
     'shop_score': shopScore,
@@ -216,6 +230,9 @@ export async function addComment (shopName, shopScore, commentText, shopTags, im
     'shop_tags': shopTags,
     'imgs': imagesURL
   }).then(objectToCamel)
+
+  shopsPatch.push(await http.get(`${root}/shops?shop_name=${shopName}`).then(objectToCamel))
+  return temp
 }
 
 export async function wait (time) {
@@ -308,4 +325,17 @@ export async function wechatConfig () {
   return await http.post(`${root}/jsapi`, {
     url: encodeURIComponent(window.location.href.split('#')[0])
   }).then(objectToCamel)
+}
+
+export async function getUserTicket () {
+  const tickets = await http.get(`${root}/tickets`).then(objectToCamel)
+  tickets.push({
+    "shop_name": 'F2咖啡', // 店铺名
+    "discount": '没有优惠信息', // 优惠信息
+    "start_time":  Date.now(), // 有效时间起始时间戳
+    "end_time": Date.now() + 10000, // 有效时间结束时间戳
+    "is_finite": true, // 是否有限
+    "tickets": [], // 用户拥有的所有该店铺的点券
+  })
+  return tickets.map(objectToCamel)
 }

@@ -9,7 +9,7 @@
     </div>
     <div class="header-title">
       <img class="bg-wave" src="./wave.png"/>
-      <h1 class="title" @click="$tip.open('暂未开发！')"> Upick </h1>
+      <h1 class="title" @click="$tip.open('暂未开发的小彩蛋！')"> Upick </h1>
       <div class="search-icon">
         <a @click="$router.push('/search');_czc.push(['_trackEvent', '主页', '搜索', '点击'])" >
           <span class="icon"></span>

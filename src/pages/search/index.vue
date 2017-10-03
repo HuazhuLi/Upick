@@ -24,7 +24,7 @@
         </ul>
       </div>
     </div>
-    <div class="preview" v-else-if="!$route.params.keyword">
+    <div class="preview" v-else-if="!$route.params.keyword && !showShopList">
       <ul>
         <li v-for="preview in previews" @click="$router.push(`/search/${preview.shopName}`),showPreview = false">
           <img class="search-icon" src="./search.png">
@@ -85,7 +85,11 @@ export default {
       }
     },
     '$route' (e) {
+      this.keyword = this.$route.params.keyword || ''
       this.keywords = [ this.$route.params.keyword ]
+      if (!this.$route.params.keyword) {
+        this.showShopList = true
+      }
       this.$forceUpdate()
     },
     keywords () {
@@ -107,9 +111,6 @@ export default {
   methods: {
     catchNoShopError (n) {
       this.showShopList = n > 0
-    },
-    consoleLogPreviews () {
-      console.log(this.previews)
     }
   }
 }
