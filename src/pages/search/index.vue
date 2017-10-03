@@ -24,7 +24,7 @@
         </ul>
       </div>
     </div>
-    <div class="preview" v-else-if="!$route.params.keyword && !showShopList">
+    <div class="preview" v-else-if="!$route.params.keyword">
       <ul>
         <li v-for="preview in previews" @click="$router.push(`/search/${preview.shopName}`),showPreview = false">
           <img class="search-icon" src="./search.png">
