@@ -92,6 +92,7 @@ ul {
   span {
     font-size 0.65rem
     line-height 1rem
+    vertical-align top
     &::before, &.go-to-comment::after {
       vertical-align top
       content ''
@@ -109,13 +110,11 @@ ul {
     &.duration-info {
       &::before {
         background-image: url('./icon_time.png')
-        transform-origin 50% 30%
       }
     }
     &.go-to-comment {
       &::before {
         background-image: url('./icon_time.png')
-        transform-origin 50% 30%
         opacity 0
       }
       &::after {
