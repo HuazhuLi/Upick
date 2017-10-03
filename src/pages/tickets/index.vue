@@ -21,7 +21,10 @@
             </span>
           </div>
           <div class="right-action">
-            <span v-if="ticket.valid && ticketsInShop.endTime > Date.now()"><img src="./icon_in.png" alt="去使用"></span>
+            <span v-if="ticket.valid && ticketsInShop.endTime > Date.now()"
+                  @click="$router.push(`/detail/${ticketsInShop.shopName}`)">
+              <img src="./icon_in.png" alt="去使用">
+            </span>
             <span v-else-if="!ticket.valid">已使用</span>
             <span v-else>已过期</span>
           </div>

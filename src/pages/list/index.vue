@@ -15,7 +15,7 @@
       </div>
     </div>
     <router-view :shops="shops" :subtype="subtypes" @pageChange="handlePageChange($event)"></router-view>
-    <button class="float-button" @click="$router.push('/add');_czc.push(['_trackEvent', '列表页', '添加新店', '点击'])">
+    <button class="float-button" @click="$router.push('/tickets');_czc.push(['_trackEvent', '列表页', '卡包', '点击'])">
       <span class="vertical-line"></span>
       <span class="horizontal-line"></span>
     </button>
