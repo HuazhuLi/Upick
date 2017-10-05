@@ -65,6 +65,10 @@ export default new Router({
       component: tickets
     },
     {
+      path: '/tickets/:code',
+      component: tickets
+    },
+    {
       path: '/destroy',
       component: destroy
     }

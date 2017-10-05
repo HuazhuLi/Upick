@@ -8,7 +8,7 @@
 
 <script>
 import wx from 'weixin-js-sdk'
-import { wechatConfig, getShopByName, checkLoginStatus } from './service'
+import { wechatConfig, getShopByName, checkLoginStatus, getCurrentPromotion, getUserInfo } from './service'
 export default {
   name: 'app',
   data () {
@@ -22,7 +22,8 @@ export default {
     })
     this.initConfig()
     this.makeConfig()
-    if ((await checkLoginStatus()) === false && process.env.NODE_ENV !== 'development') {
+    if ((window.location.href.indexOf('weixin.bingyan-tech.hustonline.net') >= 0 && window.location.href.indexOf('dev') < 0) ||
+      (await checkLoginStatus()) === false && process.env.NODE_ENV !== 'development') {
       window.title = '需要登录！'
       window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx70014cb42f7c9422&redirect_uri=http%3A//weixin.bingyan-tech.hustonline.net/upick/api/v2/weixin/access&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect'
     }
@@ -86,7 +87,24 @@ export default {
             imgUrl
           }
           break
+        case '/result/:status/:name':
+          wechatShareConfig = {
+            title: '华科优铺 | 评论店铺送优惠券啦！', // 分享标题
+            desc: `“${(await getUserInfo()).nickname}”在活动中获得了“${getCurrentPromotion().shopName || '未知店铺'}”的“${getCurrentPromotion().discount || '未知折扣'}”优惠券，快来一起参加吧！`,
+            link: `${jumpBearer}?to=${encodeURIComponent(`http://weixin.bingyan-tech.hustonline.net/upick/#/promotion/${getCurrentPromotion().code}`)}`, // 分享链接
+            imgUrl
+          }
+          break
+        case '/tickets/:code':
+          wechatShareConfig = {
+            title: '华科优铺 | 评论店铺送优惠券啦！', // 分享标题
+            desc: `“${(await getUserInfo()).nickname}”在活动中获得了“${getCurrentPromotion().shopName || '未知店铺'}”的“${getCurrentPromotion().discount || '未知折扣'}”优惠券，快来一起参加吧！`,
+            link: `${jumpBearer}?to=${encodeURIComponent(`http://weixin.bingyan-tech.hustonline.net/upick/#/promotion/${this.$route.params.code}`)}`, // 分享链接
+            imgUrl
+          }
+          break
       }
+      console.log(wechatShareConfig)
       wx.onMenuShareTimeline(wechatShareConfig)
       wx.onMenuShareAppMessage(wechatShareConfig)
       wx.onMenuShareQQ(wechatShareConfig)

@@ -24,6 +24,7 @@ export default {
       if (this.number && !isNaN(this.number)) {
         try {
           await destroyTicket(this.number)
+          this.number = ''
           this.$tip.open('销毁成功!', 'green')
         } catch (e) {
           this.$tip.open('销毁失败，请重试!')

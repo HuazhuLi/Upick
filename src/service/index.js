@@ -370,3 +370,25 @@ export async function destroyTicket (number) {
     'code': number
   }).then(objectToCamel)
 }
+
+export async function getTicketByCode (number) {
+  return await http.get(`${root}/tickets`, {
+    params: {
+      code: number
+    }
+  }).then(objectToCamel)
+}
+
+let userInfo = null
+//   nickname: '',
+//   openId: ''
+// }
+export async function getUserInfo () {
+  if (userInfo) {
+    return userInfo
+  } else {
+    return {
+      nickname: '魏俊杰'
+    }
+  }
+}
