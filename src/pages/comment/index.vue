@@ -6,7 +6,7 @@
     </div>
     <div class="mark">
       <h2>
-        <span class="mark-display">{{ currentMark.toFixed(1) }}</span>
+        <span class="mark-display">{{ parseInt(currentMark) }}</span>
       </h2>
       <div class="mark-selector">
         <span class="start">{{start}}</span>
@@ -17,7 +17,7 @@
              v-on:touchend="touchend"
         >
           <i class="dot"></i>
-          <div class="block" ref="block" v-bind:style="{'transform':'translateX('+offset+'px)'}"></div>
+          <div class="block" ref="block" v-bind:style="{'transform':'translateX('+parseInt(offset / (lineWidth / 10))*(lineWidth / 10)+'px)'}"></div>
           <i class="dot"></i>
         </div>
         <span class="end">{{end}}</span>
@@ -49,7 +49,7 @@
   </div>
 </template>
 <script>
-import { getAllTags, addComment, wait } from '../../service'
+import { getAllTags, addComment, wait, sendTicket } from '../../service'
 import { Swipe, SwipeItem } from 'vue-swipe'
 import ImageUpload from '../../components/image-upload.vue'
 export default {
@@ -142,7 +142,7 @@ export default {
       try {
         await addComment(
           this.$route.params.name,
-          this.currentMark,
+          parseInt(this.currentMark),
           this.text,
           this.activeTags.map(i => this.allTags[i].tagName),
           images.map(resp => ({
@@ -152,12 +152,14 @@ export default {
             height: resp.height
           }))
         )
+        await sendTicket(true)
         await this.$tip.open('提交成功！', '#50d467', 1000)
         this.$router.push(`/result/comment-success/${this.$route.params.name}`)
       } catch (e) {
         if (e.message.indexOf('400') >= 0) {
-          this.$tip.open('每天只能评论三次哦！', '#FF9833', 1500)
+          this.$tip.open('今天评论的太频繁了哦！', '#FF9833', 1500)
         } else {
+          console.log(e)
           this.$tip.open('评论失败！请刷新', 'rgb(255,48,93)', 1500)
         }
       }

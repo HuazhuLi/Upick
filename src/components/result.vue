@@ -51,14 +51,17 @@ export default {
     flex-grow 2
     text-align center
     h1 {
-      margin 0
+      margin auto
       font-size 0.85rem
       color #FFAC00
       font-weight 500
+      width 90%
     }
     p {
       font-size 0.6rem
       color #717171
+      margin 0.5rem auto
+      width 75%
     }
   }
   .operation {

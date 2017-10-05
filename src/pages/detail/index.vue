@@ -151,12 +151,12 @@ export default {
   methods: {
     sortByDate (array) {
       array = array.sort((a, b) => {
-        return a.issueTime - b.issueTime
+        return -(a.issueTime - b.issueTime)
       })
     },
     sortByHot (array) {
       array = array.sort((a, b) => {
-        return a.likeNumber - b.likeNumber
+        return -(a.likeNumber - b.likeNumber)
       })
     },
     checkScroll (e) {
