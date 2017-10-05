@@ -16,8 +16,8 @@
     </div>
     <router-view :shops="shops" :subtype="subtypes" @pageChange="handlePageChange($event)"></router-view>
     <button class="float-button" @click="$router.push('/tickets');_czc.push(['_trackEvent', '列表页', '卡包', '点击'])">
-      <span class="vertical-line"></span>
-      <span class="horizontal-line"></span>
+      <!--<span class="vertical-line"></span>-->
+      <!--<span class="horizontal-line"></span>-->
     </button>
   </div>
 </template>
@@ -121,13 +121,15 @@ export default {
   right 1rem
   display block
   border none
-  width (w = 4)rem
+  width (w = 4.4)rem
   height w rem
   border-radius (w / 2) rem
-  background-color #ffac00
+  background-color transparent
   transition all 0.5s
-  box-shadow rgba(215, 142, 37, 0.40) 0 0 0.5rem 0.05rem
+  // box-shadow rgba(215, 142, 37, 0.40) 0 0 0.5rem 0.05rem
   z-index 999
+  background-image url('./icon_card.png')
+  background-size 100%
   span {
     display inline-block
     background-color #FFFFFF
@@ -150,7 +152,7 @@ export default {
   }
 }
 .float-button:active {
-  background-color rgba(255, 172, 0, 0.6)
-  box-shadow rgba(215, 142, 37, 0.40) 0 0 0.7rem 0.05rem
+  // background-color rgba(255, 172, 0, 0.6)
+  // box-shadow rgba(215, 142, 37, 0.40) 0 0 0.7rem 0.05rem
 }
 </style>
