@@ -10,6 +10,7 @@ import result from '../pages/result/index.vue'
 import detail from '../pages/detail/index.vue'
 import add from '../pages/add/index.vue'
 import tickets from '../pages/tickets/index.vue'
+import destroy from '../pages/destroy/index.vue'
 
 Vue.use(Router)
 
@@ -62,6 +63,10 @@ export default new Router({
     {
       path: '/tickets',
       component: tickets
+    },
+    {
+      path: '/destroy',
+      component: destroy
     }
   ]
 })

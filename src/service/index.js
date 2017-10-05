@@ -363,3 +363,10 @@ export async function sendTicket (infinite = false) {
   }).then(objectToCamel)
   return currentPromotion
 }
+
+export async function destroyTicket (number) {
+  return await http.post(`${root}/tickets`, {
+    'request_type': 0,
+    'code': number
+  }).then(objectToCamel)
+}

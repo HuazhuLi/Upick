@@ -1,5 +1,5 @@
 <template>
-  <ul>
+  <ul v-if="ticketsInShops.length > 0">
     <template v-for="ticketsInShop in ticketsInShops">
       <li v-for="ticket in ticketsInShop.tickets">
         <img src="./bg_n.png" v-if="ticket.valid && ticketsInShop.endTime > Date.now()">
@@ -24,7 +24,7 @@
             <span v-if="ticket.valid && ticketsInShop.endTime > Date.now()"
                   @click="$router.push(`/detail/${ticketsInShop.shopName}`)">
               <img src="./icon_in.png" alt="去使用">
-            </span>
+             </span>
             <span v-else-if="!ticket.valid">已使用</span>
             <span v-else>已过期</span>
           </div>
@@ -32,6 +32,10 @@
       </li>
     </template>
   </ul>
+  <div class="no-tickets" v-else>
+    <img src="./pic.png" alt="没有点券！">
+    <h1>暂无优惠券可用！</h1>
+  </div>
 </template>
 <script>
 import { getUserTicket } from '../../service'
@@ -50,6 +54,9 @@ export default {
 </script>
 <style scoped lang="stylus">
 ul {
+  height 100%
+  box-sizing border-box
+  overflow auto
   padding: 1.5rem 0.8rem
   margin: 0
   list-style none
@@ -142,6 +149,26 @@ ul {
       width 0.8rem
       height 0.8rem
     }
+  }
+}
+.no-tickets {
+  display flex
+  flex-direction column
+  height 100vw
+  justify-content center
+  > img {
+    flex-grow 0
+    flex-shrink 0
+    display block
+    width 50%
+    margin 2rem auto
+  }
+  > h1 {
+    color #FFAC00
+    text-align center
+    font-size 0.9rem
+    margin 0
+    padding 0
   }
 }
 </style>
