@@ -5,11 +5,18 @@
       <img src="./bad.png" v-if="!succeed" :style="{ 'width': '9rem' }">
     </div>
     <div class="text">
-      <h1 v-if="headText">{{headText}}</h1>
+      <h1
+        v-for="oneHeadText in (Array.isArray(headText) ? headText : [headText])"
+        v-if="oneHeadText"
+      >{{oneHeadText}}</h1>
       <p v-if="text">{{text}}</p>
     </div>
     <div class="operation">
-      <button v-if="buttonText" @click="$emit('buttonClick')">{{buttonText}}</button>
+      <button
+        v-for="(oneButtonText, i) in (Array.isArray(buttonText) ? buttonText : [buttonText])"
+        v-if="oneButtonText"
+        @click="$emit('buttonClick', i)"
+      >{{oneButtonText}}</button>
       <router-link :to="linkTo" v-if="linkTo && linkText">{{linkText}}</router-link>
     </div>
   </div>
@@ -21,9 +28,9 @@ export default {
   },
   props: {
     succeed: Boolean,
-    headText: String,
+    headText: [String, Array],
+    buttonText: [String, Array],
     text: String,
-    buttonText: String,
     linkText: String,
     linkTo: String
   }
@@ -37,7 +44,7 @@ export default {
   flex-grow 1
   height 100%
   background-color white
-  padding-top 4rem
+  padding-top 2rem
   box-sizing border-box
   .image {
     img {
@@ -52,7 +59,7 @@ export default {
     text-align center
     h1 {
       margin auto
-      font-size 0.85rem
+      font-size 1rem
       color #FFAC00
       font-weight 500
       width 90%
@@ -61,7 +68,7 @@ export default {
       font-size 0.6rem
       color #717171
       margin 0.5rem auto
-      width 75%
+      width 60%
     }
   }
   .operation {
@@ -73,7 +80,7 @@ export default {
       height 2rem
       border-radius 1rem
       border none
-      margin auto
+      margin 0 auto 0.8rem
       font-size 0.9rem
       color #FFFFFF
       background-color #FFAC00
@@ -85,7 +92,7 @@ export default {
       text-align center
       width 5rem
       display block
-      margin 1rem auto
+      margin 0.5rem auto 1rem
     }
   }
 }

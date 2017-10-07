@@ -1,12 +1,12 @@
 <template>
   <div class="promotion-info-root">
     <div class="top-info">
-      <img src="./back.png">
+      <img src="./back_card.png">
       <div class="user-award-info">
         <p>微信用户“{{nickname}}”获得了“{{shopName}}”的“{{promotion}}”优惠券！</p>
       </div>
     </div>
-    <div class="promotion-info">
+    <div class="promotion-info" v-if="false">
       <div class="promotion-info-inside">
         <h1>活动介绍</h1>
         <h2>活动时间</h2>
@@ -59,20 +59,22 @@ export default {
 </script>
 <style scoped lang="stylus">
 .promotion-info-root {
+  box-sizing border-box
   padding-top 1rem
   height 100%
   display flex
   flex-direction column
-  background-image url('./pic_back.png')
+  background-image url('./back_pic.png')
   background-size 100% auto
   background-repeat no-repeat
   background-position bottom
 }
 .top-info {
-  position relative
+  position absolute
+  bottom 41%
   > img {
     display block
-    width 90%
+    width 85%
     margin 0 auto
   }
   .user-award-info {
@@ -81,9 +83,9 @@ export default {
     width 100%
     height 100%
     box-sizing border-box
-    padding 2.5% 5% 4.4% 5%
     display flex
     > p {
+      transform translateX(12%)
       color #FFFFFF
       width 55%
       font-size 0.80rem
@@ -97,22 +99,25 @@ export default {
   padding-top 0.5rem
 }
 .back-to-home-wrapper {
-  height 5.5rem
   > .back-to-home {
+    position absolute
+    bottom 3rem
     display block
     height 2.1rem
-    background-color #FFAC00
+    background-color #163F68
     border 0
     border-radius 1.05rem
     width 64%
     margin 0 auto
+    left 0
+    right 0
     color #ffffff
     font-size 0.8rem
-    box-shadow rgba(215, 142, 37, 0.40) 0 0 0.5rem 0.05rem
+    box-shadow rgba(22, 63, 104, 0.30) 0 0 0.5rem 0.05rem
     transition box-shadow 0.2s, opacity 0.2s
     &:active {
       opacity 0.8
-      box-shadow rgba(215, 142, 37, 0.40) 0 0 1rem 0.05rem
+      box-shadow rgba(22, 63, 104, 0.30) 0 0 1rem 0.05rem
     }
   }
 }

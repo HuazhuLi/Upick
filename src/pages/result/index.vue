@@ -1,15 +1,19 @@
 <template>
-  <result :succeed="succeed"
-          :text="text"
-          :headText="headText"
-          :buttonText="buttonText"
-          :linkText="linkText"
-          :linkTo="linkTo"
-          @buttonClick="$router.push(`/detail/${$route.params.name}`)"
-  ></result>
+  <div class="result-root">
+    <result :succeed="succeed"
+            :text="text"
+            :headText="headText"
+            :buttonText="buttonText"
+            :linkText="linkText"
+            :linkTo="linkTo"
+            @buttonClick="handleButtonClick"
+    ></result>
+    <div class="float-layer" v-if="showShareTip">
+      <button @click="showShareTip = false">朕知道了</button>
+    </div>
+  </div>
 </template>
 <script>
-import { getCurrentPromotion } from '../../service'
 import Result from '../../components/result.vue'
 export default {
   components: {
@@ -19,11 +23,12 @@ export default {
     return {
       // todo
       succeed: true,
-      headText: `“${getCurrentPromotion().shopName || '未知店铺'}”的“${getCurrentPromotion().discount || '未知折扣'}”点券已经放入你的个人卡券包了！`,
-      text: '在此页面分享此次活动还能获得更多限量优惠券哦！由于近期评论比较敏感，您的评论会在审核通过后显示。',
-      buttonText: '返回店铺',
+      headText: ['评价成功！', '并获得一张优惠券'],
+      text: '由于政治敏感期，您的评价需要审核。您的评价在我们审核通过后会立即显示。',
+      buttonText: ['再领一张', '我的卡包'],
       linkText: '返回首页',
-      linkTo: '/'
+      linkTo: '/',
+      showShareTip: false
     }
   },
   mounted () {
@@ -34,6 +39,41 @@ export default {
     } else {
       // todo
     }
+  },
+  methods: {
+    handleButtonClick (index) {
+      if (index === 0) {
+        this.showShareTip = true
+      } else {
+        this.$router.push('/tickets')
+      }
+    }
   }
 }
 </script>
+<style scoped lang="stylus">
+.result-root {
+  height 100%
+}
+.float-layer {
+  position fixed
+  height 100%
+  width 100%
+  top 0
+  background-image url('./mask.png')
+  background-size 100%
+  background-position bottom
+  > button {
+    position absolute
+    top 7rem
+    right 2rem
+    background-color transparent
+    border 1px #ffffff solid
+    border-radius 4px
+    width 4rem
+    height 1.3rem
+    color #ffffff
+    font-size 0.7rem
+  }
+}
+</style>
