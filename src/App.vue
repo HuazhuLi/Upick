@@ -8,7 +8,14 @@
 
 <script>
 import wx from 'weixin-js-sdk'
-import { wechatConfig, getShopByName, checkLoginStatus, getCurrentPromotion, getUserInfo } from './service'
+import {
+  wechatConfig,
+  getShopByName,
+  checkLoginStatus,
+  getCurrentPromotion,
+  getUserInfo,
+  getTicketByCode
+} from './service'
 export default {
   name: 'app',
   data () {
@@ -96,9 +103,10 @@ export default {
           }
           break
         case '/tickets/:code':
+          const ticketInfo = await getTicketByCode(this.$route.params.code)
           wechatShareConfig = {
             title: '华科优铺 | 评论店铺送优惠券啦！', // 分享标题
-            desc: `“${(await getUserInfo()).nickname}”在活动中获得了“${getCurrentPromotion().shopName || '未知店铺'}”的“${getCurrentPromotion().discount || '未知折扣'}”优惠券，快来一起参加吧！`,
+            desc: `“${ticketInfo.nickname}”在活动中获得了“${ticketInfo.shopName || '未知店铺'}”的“${ticketInfo.discount || '未知折扣'}”优惠券，快来一起参加吧！`,
             link: `${jumpBearer}?to=${encodeURIComponent(`http://weixin.bingyan-tech.hustonline.net/upick/#/promotion/${this.$route.params.code}`)}`, // 分享链接
             imgUrl
           }

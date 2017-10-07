@@ -11,6 +11,7 @@ import detail from '../pages/detail/index.vue'
 import add from '../pages/add/index.vue'
 import tickets from '../pages/tickets/index.vue'
 import destroy from '../pages/destroy/index.vue'
+import promotion from '../pages/promotion/index.vue'
 
 Vue.use(Router)
 
@@ -71,6 +72,10 @@ export default new Router({
     {
       path: '/destroy',
       component: destroy
+    },
+    {
+      path: '/promotion/:code',
+      component: promotion
     }
   ]
 })

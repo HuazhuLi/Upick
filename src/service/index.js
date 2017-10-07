@@ -372,7 +372,7 @@ export async function destroyTicket (number) {
 }
 
 export async function getTicketByCode (number) {
-  return await http.get(`${root}/tickets`, {
+  return await http.get(`${root}/tickets/ticket_info`, {
     params: {
       code: number
     }
@@ -385,10 +385,8 @@ let userInfo = null
 // }
 export async function getUserInfo () {
   if (userInfo) {
-    return userInfo
   } else {
-    return {
-      nickname: '魏俊杰'
-    }
+    userInfo = await http.get(`${root}/user_info`).then(objectToCamel)
   }
+  return userInfo
 }
