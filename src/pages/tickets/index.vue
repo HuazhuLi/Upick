@@ -4,7 +4,7 @@
       <div class="ticket-container">
         <img src="./bg_card.png" alt="">
         <div class="single-ticket-info">
-          <img :src="currentTicketInfo.shopImg[0].msrc" alt="">
+          <img :src="(currentTicketInfo.shopImg[0] || {}).msrc" alt="">
           <h1 class="shop-name">{{currentTicketInfo.shopName}}</h1>
           <p class="promotion-info">
               {{currentTicketInfo.discount}}
@@ -27,7 +27,7 @@
         <img src="./bg_n.png" v-if="ticket.valid && ticket.endTime > Date.now()">
         <img src="./bg_d.png" v-else>
         <div class="ticket-info">
-          <img class="shop-icon" :src="ticket.shopImg[0].msrc"/>
+          <img class="shop-icon" :src="(ticket.shopImg[0] || {}).msrc"/>
           <div class="text-info" @click="ticket.valid && ticket.endTime > Date.now() && $router.push(`/tickets/${ticket.code}`)">
             <h1>{{ticket.shopName}}</h1>
             <span class="promotion-info">
