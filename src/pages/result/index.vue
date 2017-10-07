@@ -65,7 +65,7 @@ export default {
   background-position bottom
   > button {
     position absolute
-    top 7rem
+    top 7.5rem
     right 2rem
     background-color transparent
     border 1px #ffffff solid

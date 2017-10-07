@@ -4,13 +4,13 @@
       <div class="ticket-container">
         <img src="./bg_card.png" alt="">
         <div class="single-ticket-info">
-          <img :src="currentTicketInfo.shopImg.msrc" alt="">
+          <img :src="currentTicketInfo.shopImg[0].msrc" alt="">
           <h1 class="shop-name">{{currentTicketInfo.shopName}}</h1>
           <p class="promotion-info">
               {{currentTicketInfo.discount}}
           </p>
           <p class="duration-info">
-            {{new Date(currentTicketInfo.startTime).toLocaleDateString()}}
+            {{new Date('2017/10/8').toLocaleDateString()}}
             -
             {{new Date(currentTicketInfo.endTime).toLocaleDateString()}}
           </p>
@@ -23,29 +23,28 @@
     <button class="my-tickets" @click="$router.go(-1)">我的卡包</button>
   </div>
   <ul v-else-if="ticketsInShops.length > 0">
-    <template v-for="ticketsInShop in ticketsInShops">
-      <li v-for="ticket in ticketsInShop.tickets">
-        <img src="./bg_n.png" v-if="ticket.valid && ticketsInShop.endTime > Date.now()">
+      <li v-for="ticket in ticketsInShops">
+        <img src="./bg_n.png" v-if="ticket.valid && ticket.endTime > Date.now()">
         <img src="./bg_d.png" v-else>
         <div class="ticket-info">
-          <img class="shop-icon" :src="ticketsInShop.shopImg.msrc"/>
-          <div class="text-info" @click="ticket.valid && ticketsInShop.endTime > Date.now() && $router.push(`/tickets/${ticket.number}`)">
-            <h1>{{ticketsInShop.shopName}}</h1>
+          <img class="shop-icon" :src="ticket.shopImg[0].msrc"/>
+          <div class="text-info" @click="ticket.valid && ticket.endTime > Date.now() && $router.push(`/tickets/${ticket.code}`)">
+            <h1>{{ticket.shopName}}</h1>
             <span class="promotion-info">
-              {{ticketsInShop.discount}}
+              {{ticket.discount}}
             </span>
             <span class="duration-info" v-if="ticket.valid">
-              {{new Date(ticketsInShop.startTime).toLocaleDateString()}}
+              {{new Date('2017/10/8').toLocaleDateString()}}
               -
-              {{new Date(ticketsInShop.endTime).toLocaleDateString()}}
+              {{new Date(ticket.endTime).toLocaleDateString()}}
             </span>
-            <span class="go-to-comment" v-else @click.stop="$router.push(`/comment/${ticketsInShop.shopName}`)">
+            <span class="go-to-comment" v-else @click.stop="$router.push(`/comment/${ticket.shopName}`)">
               去评价
             </span>
           </div>
           <div class="right-action">
-            <span v-if="ticket.valid && ticketsInShop.endTime > Date.now()"
-                  @click="$router.push(`/detail/${ticketsInShop.shopName}`)">
+            <span v-if="ticket.valid && ticket.endTime > Date.now()"
+                  @click="$router.push(`/detail/${ticket.shopName}`)">
               <img src="./icon_in.png" alt="去使用">
              </span>
             <span v-else-if="!ticket.valid">已使用</span>
@@ -53,7 +52,6 @@
           </div>
         </div>
       </li>
-    </template>
   </ul>
   <div class="no-tickets" v-else>
     <img src="./pic.png" alt="没有点券！">
@@ -90,9 +88,7 @@ export default {
   methods: {
     update (to) {
       if (to.params.code) {
-        this.currentTicketInfo = this.ticketsInShops.find(({tickets}) => {
-          return tickets.filter(ticket => ticket.number === to.params.code).length > 0
-        })
+        this.currentTicketInfo = this.ticketsInShops.find(ticket => ticket.code === to.params.code)
       }
     }
   }
@@ -130,6 +126,7 @@ ul {
   height 3rem
   border-radius 1.5rem
   background-color aliceblue
+  flex-shrink 0
 }
 .text-info {
   flex-grow 1
@@ -148,10 +145,12 @@ ul {
     vertical-align top
   }
 }
-.promotion-info, .duration-info, .go-to-comment {
+span.promotion-info, span.duration-info, span.go-to-comment {
   font-size 0.65rem
   line-height 1rem
   vertical-align top
+  transform translateX(1rem)
+  padding-right 1rem
   &::before, &.go-to-comment::after {
     vertical-align top
     content ''
@@ -159,7 +158,8 @@ ul {
     height 1rem
     display inline-block
     background-size 100% 100%
-    transform scale(0.7)
+    transform translateX(-100%)scale(0.7)
+    position absolute
   }
   &.promotion-info {
     &::before {
@@ -198,6 +198,7 @@ p.promotion-info, p.duration-info{
   margin-right 2%
   right 0
   top 0
+  flex-shrink 0
   span {
     color #ffffff
     margin auto
@@ -283,6 +284,25 @@ p.promotion-info, p.duration-info{
     color #ffffff
     text-align center
     margin 0
+    &::before {
+      display block
+      vertical-align top
+      content ''
+      width 1rem
+      height 1rem
+      background-size 100% 100%
+      transform scale(0.7)
+    }
+  }
+  .promotion-info {
+    &::before {
+      background-image: url('./icon_tag.png')
+    }
+  }
+  .duration-info {
+    &::before {
+      background-image: url('./icon_time.png')
+    }
   }
 }
 .ticket-code {
