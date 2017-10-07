@@ -53,6 +53,12 @@
         </li>
       </ul>
     </div>
+    <div class="pop-over-wrapper" :class="{'hidden': hiddenPopover}">
+      <div class="pop-over">
+        <img src="./box.png" alt="">
+        <button class="close-pop-over" @click="hiddenPopover = true"></button>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -64,7 +70,8 @@ export default {
       hotShops: [],
       shopTypes: [],
       typeLineHeight: 0,
-      _czc: null
+      _czc: null,
+      hiddenPopover: true
     }
   },
   async mounted () {
@@ -112,6 +119,12 @@ export default {
     }
     // window.addEventListener('resize', resizeTypeImages)
     this.$nextTick(resizeTypeImages)
+    if (!localStorage.getItem('popover')) {
+      setTimeout(() => {
+        this.hiddenPopover = false
+        localStorage.setItem('popover', 'true')
+      }, 400)
+    }
   }
 }
 </script>
@@ -291,6 +304,43 @@ h2, h3, h4 {
           border-radius (h / 2)rem
           text-decoration none
         }
+      }
+    }
+  }
+  .pop-over-wrapper {
+    position fixed
+    height 100%
+    width 100%
+    background-color rgba(0,0,0,0.3)
+    display flex
+    flex-direction column
+    transition opacity 0.2s, z-index 0s
+    &.hidden {
+      z-index -100
+      opacity 0
+      transition opacity 0.2s, z-index 0s 0.5s
+      .pop-over {
+        transform translateY(2rem)
+      }
+    }
+    .pop-over {
+      transition transform 0.2s
+      width 90%
+      margin auto
+      position relative
+      > img {
+        width 100%
+      }
+      .close-pop-over {
+        width 1rem
+        height 1rem
+        border 0
+        background-image url('./icon_cancel.png')
+        background-size 100% 100%
+        background-color transparent
+        position absolute
+        right -0.3rem
+        top -0.3rem
       }
     }
   }
