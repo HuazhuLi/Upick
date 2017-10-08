@@ -16,8 +16,8 @@ export default {
     }
   },
   mounted () {
-    window.closeLoading()
     document.title = '销毁卡券'
+    window.closeLoading()
   },
   methods: {
     async destroy () {
