@@ -111,6 +111,14 @@ export default {
             imgUrl
           }
           break
+        case '/destroy':
+          wechatShareConfig = {
+            title: '华科优铺 | 商家优惠券销毁页面', // 分享标题
+            desc: `请商家在顾客出示优惠券号码并得到优惠后，一定要记得在这里销毁哦！`,
+            link: `${jumpBearer}?to=${encodeURIComponent(window.location.href)}`, // 分享链接
+            imgUrl
+          }
+          break
       }
       console.log(wechatShareConfig)
       wx.onMenuShareTimeline(wechatShareConfig)

@@ -53,10 +53,15 @@
         </li>
       </ul>
     </div>
-    <div class="pop-over-wrapper" :class="{'hidden': hiddenPopover}">
-      <div class="pop-over">
-        <img src="./box.png" alt="">
-        <button class="close-pop-over" @click="hiddenPopover = true"></button>
+    <div class="pop-over-wrapper" :class="{'hidden': hiddenPopover}" @click="hiddenPopover = true">
+      <div class="pop-over" @click.stop=";">
+        <img src="./back_title.png" alt="">
+        <h2>活动规则</h2>
+        <p>活动时间：2017/10/8 - 2017/10/14</p>
+        <p>活动内容：活动期间</p>
+        <p>1.凡是添加了评论都能获取一张优惠券</p>
+        <p>2.凡是分享了自己评论都能额外获取一张优惠券</p>
+        <button class="close-pop-over" @click.stop="hiddenPopover = true"></button>
       </div>
     </div>
   </div>
@@ -324,6 +329,10 @@ h2, h3, h4 {
       }
     }
     .pop-over {
+      background-color #FFFFFF
+      padding 0.3rem
+      padding-bottom 1.5rem
+      border-radius 0.3rem
       transition transform 0.2s
       width 90%
       margin auto
@@ -341,6 +350,16 @@ h2, h3, h4 {
         position absolute
         right -0.3rem
         top -0.3rem
+      }
+      > h2 {
+        font-size 0.8rem
+        text-align start
+        margin 0.2rem 0.3rem
+      }
+      > p {
+        color #626262
+        font-size 0.65rem
+        margin 0 0.3rem
       }
     }
   }

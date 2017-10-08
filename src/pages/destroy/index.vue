@@ -2,7 +2,7 @@
   <div class="container">
     <div class="input-block">
       <img src="./bg_destroy.png" alt="">
-      <input type="text" v-model="number" placeholder="输入优惠券编号">
+      <input type="text" v-model="number" placeholder="输入优惠券编号" @keydown.enter="destroy">
     </div>
     <button class="destroy" @click="destroy">确认销毁</button>
   </div>
