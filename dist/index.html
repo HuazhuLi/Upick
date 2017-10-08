@@ -220,10 +220,10 @@
       (function () {
         var loading = document.getElementById('loading');
         window.closeLoading = function () {
-//          clearTimeout(window.startHandle)
-//          setTimeout(function () {
-          loading.classList.add('hidden');
-//          }, 0)
+          clearTimeout(window.startHandle)
+          setTimeout(function () {
+            loading.classList.add('hidden');
+          }, 0)
         }
         window.showLoading = function () {
           window.startHandle = setTimeout(function () {
