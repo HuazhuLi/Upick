@@ -120,6 +120,7 @@ export default {
           }
           break
       }
+      window._czc.push(['_trackEvent', '分享', (wechatShareConfig || {}).title, (await getUserInfo()).nickname])
       console.log(wechatShareConfig)
       wx.onMenuShareTimeline(wechatShareConfig)
       wx.onMenuShareAppMessage(wechatShareConfig)

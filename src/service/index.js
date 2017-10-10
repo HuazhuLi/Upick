@@ -329,23 +329,18 @@ export async function wechatConfig () {
 
 export async function getUserTicket () {
   const tickets = await http.get(`${root}/tickets`).then(objectToCamel)
+  // let tickets = []
   // tickets.push({
   //   'shop_name': 'F2咖啡', // 店铺名
   //   'discount': '没有优惠信息', // 优惠信息
   //   'start_time': Date.now(), // 有效时间起始时间戳
   //   'end_time': Date.now() + 1000, // 有效时间结束时间戳
   //   'is_finite': true, // 是否有限
-  //   'shop_img': {
+  //   'shop_img': [{
   //     'msrc': ''
-  //   },
-  //   'tickets': [
-  //     {'number': '44444', 'valid': true},
-  //     {'number': '44443', 'valid': true},
-  //     {'number': '44445', 'valid': false},
-  //     {'number': '44445', 'valid': false},
-  //     {'number': '44445', 'valid': false},
-  //     {'number': '44445', 'valid': false}
-  //   ] // 用户拥有的所有该店铺的点券
+  //   }],
+  //   'number': '44444',
+  //   'valid': true
   // })
   return tickets.map(objectToCamel)
 }

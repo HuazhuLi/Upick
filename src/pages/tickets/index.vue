@@ -283,7 +283,8 @@ p.promotion-info, p.duration-info{
     font-size 0.8rem
     color #ffffff
     text-align center
-    margin 0
+    margin 0 auto
+    width 80%
     &::before {
       display block
       vertical-align top
