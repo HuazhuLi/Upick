@@ -120,8 +120,9 @@ export default {
           }
           break
       }
-      window._czc.push(['_trackEvent', '分享', (wechatShareConfig || {}).title, (await getUserInfo()).nickname])
       console.log(wechatShareConfig)
+      window.wechatShareConfig = wechatShareConfig
+
       wx.onMenuShareTimeline(wechatShareConfig)
       wx.onMenuShareAppMessage(wechatShareConfig)
       wx.onMenuShareQQ(wechatShareConfig)
@@ -144,7 +145,9 @@ export default {
           'onMenuShareQZone',
           'previewImage'
         ],
-        success: function () {
+        success: async function () {
+          await sendTicket(false)
+          window._czc.push(['_trackEvent', '分享', (window.wechatShareConfig || {}).title, (await getUserInfo()).nickname])
           // 用户确认分享后执行的回调函数
         },
         cancel: function () {
