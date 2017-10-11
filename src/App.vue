@@ -14,7 +14,8 @@ import {
   checkLoginStatus,
   getCurrentPromotion,
   getUserInfo,
-  getTicketByCode
+  getTicketByCode,
+  sendTicket
 } from './service'
 export default {
   name: 'app',
@@ -37,8 +38,8 @@ export default {
   },
   methods: {
     async makeConfig () {
-      const jumpBearer = 'http://weixin.bingyan-tech.hustonline.net/devupick/jump.html'
-      const imgUrl = 'http://weixin.bingyan-tech.hustonline.net/devupick/static/img/title-share.png'
+      const jumpBearer = 'http://weixin.bingyan-tech.hustonline.net/upick/jump.html'
+      const imgUrl = 'http://weixin.bingyan-tech.hustonline.net/upick/static/img/title-share.png'
       let wechatShareConfig
       if (this.$route.path === '/') {
         wechatShareConfig = {
@@ -119,7 +120,25 @@ export default {
             imgUrl
           }
           break
+        default:
+          wechatShareConfig = {
+            title: `华科优铺 | 让校内坑店无处遁形！`, // 分享标题
+            desc: '发现校内优质店铺，\n吐槽校内黑心商家，\n让品质校园生活从华科优铺开始！',
+            link: `${jumpBearer}?to=${encodeURIComponent(window.location.href)}`, // 分享链接
+            imgUrl
+          }
+          break
       }
+      Object.assign(wechatShareConfig, {
+        success: async function () {
+          await sendTicket(false)
+          window._czc.push(['_trackEvent', '分享', (window.wechatShareConfig || {}).title, (await getUserInfo()).nickname])
+          // 用户确认分享后执行的回调函数
+        },
+        cancel: function () {
+          // 用户取消分享后执行的回调函数
+        }
+      })
       console.log(wechatShareConfig)
       window.wechatShareConfig = wechatShareConfig
 
@@ -144,15 +163,7 @@ export default {
           'onMenuShareWeibo',
           'onMenuShareQZone',
           'previewImage'
-        ],
-        success: async function () {
-          await sendTicket(false)
-          window._czc.push(['_trackEvent', '分享', (window.wechatShareConfig || {}).title, (await getUserInfo()).nickname])
-          // 用户确认分享后执行的回调函数
-        },
-        cancel: function () {
-          // 用户取消分享后执行的回调函数
-        }
+        ]
       })
       wx.ready(() => {
         this.makeConfig()
