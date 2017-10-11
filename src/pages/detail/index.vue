@@ -52,7 +52,7 @@
               :class="{ 'active': currentType === 1 }"
         >最热评论</span>
       </div>
-      <ul class="comments-list" @scroll="checkScroll">
+      <ul class="comments-list" @scroll="checkScroll" ref="commentsList">
         <li v-for="comment in comments" class="item">
           <img :src="comment.authorHeadimg">
           <div class="comment-value">
@@ -117,7 +117,9 @@ export default {
       comments: [],
       currentType: 0,
       shrink: false,
-      _czc: null
+      _czc: null,
+      leftScrollTop: 0,
+      rightScrollTop: 0
     }
   },
   async mounted () {
@@ -206,11 +208,25 @@ export default {
     }
   },
   watch: {
-    currentType (to) {
+    currentType (to, from) {
+      const target = this.$refs.commentsList
+      // 下面的代码负责保存scrollTop
+      if (from === 0) {
+        this.leftScrollTop = target.scrollTop
+      } else {
+        this.rightScrollTop = target.scrollTop
+      }
+      // 下面的代码负责恢复scrollTop
       if (to === 0) {
         this.sortByDate(this.comments)
+        this.$nextTick(() => {
+          target.scrollTop = this.leftScrollTop
+        })
       } else {
         this.sortByHot(this.comments)
+        this.$nextTick(() => {
+          target.scrollTop = this.rightScrollTop
+        })
       }
     }
   }
@@ -435,13 +451,16 @@ export default {
 }
 .comment-value {
   flex-grow 1
+  overflow hidden
   .name {
     display flex
     height 2rem
     flex-direction row
+    overflow hidden
     .name-date {
       flex-grow 1
       height 2rem
+      overflow hidden
       span {
         display block
       }
@@ -451,12 +470,17 @@ export default {
       }
       .span-name {
         font-size 0.75rem
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis
+        padding-right 1em
       }
     }
     .like, .dislike {
       width 3rem
       font-size 0.7rem
       color #717171
+      flex-shrink 0
     }
     .icon {
       display inline-block

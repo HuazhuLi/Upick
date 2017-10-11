@@ -17,7 +17,7 @@
       </div>
     </div>
     <div class="classify" ref="typeRoot">
-      <h3 class="slogan">
+      <h3 class="slogan" @click="hiddenPopover = false">
         <span></span>{{ slogan }}<span></span>
       </h3>
       <h2>
@@ -124,10 +124,10 @@ export default {
     }
     // window.addEventListener('resize', resizeTypeImages)
     this.$nextTick(resizeTypeImages)
-    if (!localStorage.getItem('popover')) {
+    if (!localStorage.getItem('popover') || isNaN(localStorage.getItem('popover')) || Date.now() - localStorage.getItem('popover') >= 1000 * 3600 * 24 * 5) {
       setTimeout(() => {
         this.hiddenPopover = false
-        localStorage.setItem('popover', 'true')
+        localStorage.setItem('popover', Date.now())
       }, 400)
     }
   }
