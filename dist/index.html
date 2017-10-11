@@ -10,8 +10,11 @@
       _czc.push(["_setAccount", "1261738666"]);</script><script type=application/javascript>/**
        * 下面这段代码负责跳转到安全域名
        */
-      if (window.location.href.indexOf('weixin.bingyan-tech.hustonline.net') < 0) {
-        // window.location.href = 'http://weixin.bingyan-tech.hustonline.net/devupick/'
+      if (window.location.href.indexOf('weixin.bingyan-tech.hustonline.net') < 0 &&
+        (window.location.href.indexOf('localhost') < 0 &&
+          window.location.href.indexOf('127.0.0.1') < 0)
+      ) {
+        window.location.href = 'http://weixin.bingyan-tech.hustonline.net/upick/'
       }</script><style type=text/css>span#cnzz_stat_icon_1264592648 {
         display: none;
       }
