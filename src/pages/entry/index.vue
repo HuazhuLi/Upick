@@ -27,10 +27,12 @@
         <div v-for="(line, lineIndex) in shopTypes"
              class="shop-types-line"
              ref="line"
+             :key="line"
         >
           <div class="wrapper"
                v-for="index in line.length * 2 - 1"
                :style="{'height': typeLineHeight + 'px'}"
+               :key="index"
           >
             <a v-if="index % 2 === 1" @click="$router.push(`/list/${line[(index - 1) / 2]}/`);_czc.push(['_trackEvent', '主页', '大类', line[(index - 1) / 2]])">
               <div class="type-img" ref="typeImages"></div>
@@ -48,7 +50,7 @@
         <span></span>
       </h2>
       <ul>
-        <li v-for="hotShop in hotShops.slice(0,6)">
+        <li v-for="hotShop in hotShops.slice(0,6)" :key="hotShop.shopName">
           <a class="shop" @click="$router.push(`/detail/${hotShop.shopName}`);_czc.push(['_trackEvent', '主页', '热门', hotShop.shopName])">{{hotShop.shopName}}</a>
         </li>
       </ul>
@@ -124,12 +126,12 @@ export default {
     }
     // window.addEventListener('resize', resizeTypeImages)
     this.$nextTick(resizeTypeImages)
-    if (!localStorage.getItem('popover') || isNaN(localStorage.getItem('popover')) || Date.now() - localStorage.getItem('popover') >= 1000 * 3600 * 24 * 5) {
-      setTimeout(() => {
-        this.hiddenPopover = false
-        localStorage.setItem('popover', Date.now())
-      }, 400)
-    }
+    // if (!localStorage.getItem('popover') || isNaN(localStorage.getItem('popover')) || Date.now() - localStorage.getItem('popover') >= 1000 * 3600 * 24 * 5) {
+    //   setTimeout(() => {
+    //     this.hiddenPopover = false
+    //     localStorage.setItem('popover', Date.now())
+    //   }, 400)
+    // }
   }
 }
 </script>
