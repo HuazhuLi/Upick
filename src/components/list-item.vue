@@ -6,7 +6,12 @@
       </div>
       <div class="text">
         <h2>
-          <span class="name-left">{{shopName}}</span>
+          <span class="name-left">
+            {{shopName.replace('（', '(').replace('）', ')')}}
+            <span v-if="isAuth" class='auth-img-wrapper'>
+              <img class='auth-img' src="./iknow.png"/>
+            </span>
+          </span>
           <span class="score-right">{{scoreText}}</span>
         </h2>
         <ul class="tags-list">
@@ -31,6 +36,7 @@ export default {
     }
   },
   props: {
+    isAuth: Boolean,
     iconSrc: String,
     shopName: String,
     score: Number,
@@ -122,6 +128,7 @@ a {
         white-space nowrap
         overflow hidden
         text-overflow ellipsis
+        vertical-align top
       }
       .score-right {
         flex-shrink 0
@@ -154,5 +161,14 @@ a {
       }
     }
   }
+}
+.auth-img-wrapper {
+  position absolute
+}
+
+.auth-img {
+  height 1.2rem
+  width auto
+  margin-left 0.2rem
 }
 </style>

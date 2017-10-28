@@ -10,6 +10,7 @@
                      :shopName="shop.shopName"
                      :tags="shop.shopTags"
                      :score="shop.shopScore"
+                     :isAuth="shop.isAuth"
           >
           </list-item>
         </ul>

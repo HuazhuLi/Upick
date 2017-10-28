@@ -27,7 +27,7 @@
         <div v-for="(line, lineIndex) in shopTypes"
              class="shop-types-line"
              ref="line"
-             :key="line"
+             :key="line.join('')"
         >
           <div class="wrapper"
                v-for="index in line.length * 2 - 1"

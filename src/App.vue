@@ -187,6 +187,7 @@ export default {
 </script>
 
 <style lang="stylus">
+@import url('../node_modules/swiper/dist/css/swiper.min.css');
 .slide-right-enter {
   transform translateX(-100%)
 }
