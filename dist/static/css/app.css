@@ -129,6 +129,8 @@ ul {
   transition: opacity 0s 1s, z-index 0s 1s;
   z-index: -1;
   opacity: 0;
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
 }
 .H-tRCOi2ydh5Qc-qmGh6C._2gRL8gQoQCpP1Em6f_I-qq {
   position: relative;
